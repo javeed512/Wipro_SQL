@@ -1,0 +1,424 @@
+
+SQL will help us to perform CRUD operations
+
+C - Create/Insert records
+R - Retrieve/Select records
+U - Modify/Update  records
+D - Remove/ Delete records
+
+CRUD Operations help us to perform Database Management using any of the DBMS.
+Ex: Oracle , Mysql , Sybase...
+
+
+
+Employees
+
+select * from Employees;
+
+SELECT * 
+FROM 
+ EMPLOYEES;
+
+EmpName
+
+King
+Javeed
+tom
+smith
+
+
+
+oracle date format :   DD-MON-YYYY
+		ex:   '17-APR-2024'
+
+
+INSERT INTO Employees values(101,'javeed','17-DEC-2022');
+
+
+
+Oracle Datatypes:
+-----------------
+Numeric  values:
+Integer or Decimal 
+
+NUMBER 
+ex:   Eid  NUMBER(3);    // 101  , 456 ,123 , 5 , 99 , 777
+
+   salary  NUMBER(7,2);  //  _ _ _ _ _ . _ _
+	
+	EX:  50000.99
+		500000.9
+
+
+Character type values or Strings:
+
+EmpName  CHAR(10);   //  'javeed sir'  , 'tom - - - - - - -'
+
+Ex:  Gender CHAR(1); M,F,O
+    IFSC  CHAR(8); 'HDFC1234' ,'HDFC4567'
+
+EmpName  VARCHAR2(10);  //   'tom-------'
+
+
+DATE:  Date datatype can handle date as well as time
+
+  'DD-MON-YYYY  HH:MM:SS'
+
+sec  to century
+
+
+---------------------------------
+SQL:
+
+DDL: Data Definition Language:
+It is used whenever we want to work with structure of table or any Database objects
+
+Database Objects:  Tables, Users, Views , Indexes , Sequences , Procedure , Function , Trigger , packages etc
+
+
+CREATE ,  ALTER , DROP , TRUNCATE , RENAME
+
+
+CREATE: It is use to create any object like table,user,view etc
+
+CREATE TABLE  Products(Pid NUMBER(2) PRIMARY KEY  ,
+			PName  VARCHAR2(20) ,
+			 DOP DATE , 
+			Price NUMBER(7,2) );
+
+
+
+primary key =  unique + not null;
+
+
+DML: Data Manipulation Language:
+It is used when ever we want to manipulate data in database.
+
+INSERT , UPDATE , DELETE
+
+INSERT  INTO  Products values(10,'mobile','01-APR-2024',15000.00);
+INSERT  INTO  Products values(20,'laptop','12-JAN-2024',45000.00);
+INSERT  INTO  Products values(30,'charger','19-FEB-2024',3000.00);
+INSERT  INTO  Products values(40,'power bank','02-APR-2024',7000.00);
+INSERT  INTO  Products values(50,'watch','27-DEC-2023',1200.00);
+
+
+
+
+DRL / DQL : SELECT 
+
+It is used to fetch data from database.
+
+syn:-  
+
+select project of columns from  table where  filter  group by column_name  having filter  order by asc/desc;
+
+Ex1:  select pname , price , pid  from products  where  price > 10000;
+
+
+Ex2:  select pname, price  from products where   price < 1500;
+
+
+Day-1 All SQL Queries:
+======================
+
+
+SQL> CONNECT   system/admin
+Connected.
+SQL> connect  hr/hr;
+Connected.
+SQL> conn  system/admin;
+Connected.
+SQL> CREATE TABLE  Products(Pid NUMBER(2) PRIMARY KEY  ,
+  2  PName  VARCHAR2(20) ,
+  3   DOP DATE ,
+  4  Price NUMBER(7,2) );
+
+Table created.
+
+SQL> describe  products
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PID                                       NOT NULL NUMBER(2)
+ PNAME                                              VARCHAR2(20)
+ DOP                                                DATE
+ PRICE                                              NUMBER(7,2)
+
+SQL> desc  products
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PID                                       NOT NULL NUMBER(2)
+ PNAME                                              VARCHAR2(20)
+ DOP                                                DATE
+ PRICE                                              NUMBER(7,2)
+
+SQL> INSERT  INTO  Products values(10,'mobile','01-APR-2024',15000.00);
+
+1 row created.
+
+SQL> SELECT * FROM  PRODUCTS;
+
+       PID PNAME                DOP            PRICE
+---------- -------------------- --------- ----------
+        10 mobile               01-APR-24      15000
+
+SQL> INSERT  INTO  Products values(20,'laptop','12-JAN-2024',45000.00);
+
+1 row created.
+
+SQL> INSERT  INTO  Products values(30,'charger','19-FEB-2024',3000.00);
+
+1 row created.
+
+SQL> INSERT  INTO  Products values(40,'power bank','02-APR-2024',7000.00);
+
+1 row created.
+
+SQL> INSERT  INTO  Products values(50,'watch','27-DEC-2023',1200.00);
+
+1 row created.
+
+SQL> SELECT * FROM PRODUCTS;
+
+       PID PNAME                DOP            PRICE
+---------- -------------------- --------- ----------
+        10 mobile               01-APR-24      15000
+        20 laptop               12-JAN-24      45000
+        30 charger              19-FEB-24       3000
+        40 power bank           02-APR-24       7000
+        50 watch                27-DEC-23       1200
+
+SQL> SELECT  pname  , price from products;
+
+PNAME                     PRICE
+-------------------- ----------
+mobile                    15000
+laptop                    45000
+charger                    3000
+power bank                 7000
+watch                      1200
+
+SQL>  select pname , price , pid  from products  where  price > 10000;
+
+PNAME                     PRICE        PID
+-------------------- ---------- ----------
+mobile                    15000         10
+laptop                    45000         20
+
+SQL>  select pname, price  from products where   price < 1500;
+
+PNAME                     PRICE
+-------------------- ----------
+watch                      1200
+
+SQL>  select pname, price  from products where   price <= 15000;
+
+PNAME                     PRICE
+-------------------- ----------
+mobile                    15000
+charger                    3000
+power bank                 7000
+watch                      1200
+
+SQL> select  pid ,  pname , price  from products  where  price  != 5000;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+        10 mobile                    15000
+        20 laptop                    45000
+        30 charger                    3000
+        40 power bank                 7000
+        50 watch                      1200
+
+SQL> select  pid ,  pname , price  from products  where  price  <>   5000;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+        10 mobile                    15000
+        20 laptop                    45000
+        30 charger                    3000
+        40 power bank                 7000
+        50 watch                      1200
+
+SQL> select pid ,pname ,price  from products  where   pname = "laptop";
+select pid ,pname ,price  from products  where   pname = "laptop"
+                                                         *
+ERROR at line 1:
+ORA-00904: "laptop": invalid identifier
+
+
+SQL> select pid ,pname ,price  from products  where   pname = 'laptop';
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+        20 laptop                    45000
+
+SQL> select pid ,pname ,price  from products  where   pname = 'LAPTOP';
+
+no rows selected
+
+SQL> SELECT PID  , PNAME , PRICE  from PRODUCTS where PNAME = 'laptop' AND  pname = 'mobile';
+
+no rows selected
+
+SQL> SELECT PID  , PNAME , PRICE  from PRODUCTS where PNAME = 'laptop' OR  pname = 'mobile';
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+        10 mobile                    15000
+        20 laptop                    45000
+
+SQL> SELECT PID  , PNAME , PRICE  from PRODUCTS where PNAME = 'laptop' AND  price > 30000;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+        20 laptop                    45000
+
+SQL> select    pname ,   price  + 500  from products;
+
+PNAME                 PRICE+500
+-------------------- ----------
+mobile                    15500
+laptop                    45500
+charger                    3500
+power bank                 7500
+watch                      1700
+
+SQL> select    pname ,   price  + 500   as  Total   from products;
+
+PNAME                     TOTAL
+-------------------- ----------
+mobile                    15500
+laptop                    45500
+charger                    3500
+power bank                 7500
+watch                      1700
+
+SQL> select    pname ,   price - 500   as  Total   from products;
+
+PNAME                     TOTAL
+-------------------- ----------
+mobile                    14500
+laptop                    44500
+charger                    2500
+power bank                 6500
+watch                       700
+
+SQL> select    pname ,   price * 2   as  Total   from products;
+
+PNAME                     TOTAL
+-------------------- ----------
+mobile                    30000
+laptop                    90000
+charger                    6000
+power bank                14000
+watch                      2400
+
+SQL> select    pname ,   price * 2   as  price   from products;
+
+PNAME                     PRICE
+-------------------- ----------
+mobile                    30000
+laptop                    90000
+charger                    6000
+power bank                14000
+watch                      2400
+
+SQL> select    pname ,   price * 2   as  Final_Price   from products;
+
+PNAME                FINAL_PRICE
+-------------------- -----------
+mobile                     30000
+laptop                     90000
+charger                     6000
+power bank                 14000
+watch                       2400
+
+SQL> desc  DUAL;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DUMMY                                              VARCHAR2(1)
+
+SQL> desc  PRODUCTS;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PID                                       NOT NULL NUMBER(2)
+ PNAME                                              VARCHAR2(20)
+ DOP                                                DATE
+ PRICE                                              NUMBER(7,2)
+
+SQL> SELECT  1+2  FROM DUAL;
+
+       1+2
+----------
+         3
+
+SQL> SELECT   SYSDATE  FROM DUAL;
+
+SYSDATE
+---------
+17-APR-24
+
+SQL> SELECT PID  , PNAME , PRICE  from PRODUCTS ;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+        10 mobile                    15000
+        20 laptop                    45000
+        30 charger                    3000
+        40 power bank                 7000
+        50 watch                      1200
+
+SQL> SELECT PID  , PNAME , PRICE  from PRODUCTS  ORDER BY  PNAME;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+        30 charger                    3000
+        20 laptop                    45000
+        10 mobile                    15000
+        40 power bank                 7000
+        50 watch                      1200
+
+SQL> SELECT PID  , PNAME , PRICE  from PRODUCTS  ORDER BY  PRICE;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+        50 watch                      1200
+        30 charger                    3000
+        40 power bank                 7000
+        10 mobile                    15000
+        20 laptop                    45000
+
+SQL> SELECT PID  , PNAME , PRICE  from PRODUCTS  ORDER BY  PRICE  asc;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+        50 watch                      1200
+        30 charger                    3000
+        40 power bank                 7000
+        10 mobile                    15000
+        20 laptop                    45000
+
+SQL> SELECT PID  , PNAME , PRICE  from PRODUCTS  ORDER BY  PRICE  desc;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+        20 laptop                    45000
+        10 mobile                    15000
+        40 power bank                 7000
+        30 charger                    3000
+        50 watch                      1200
+
+
+
+
+
+
+
+
+
+
+
+
+
+
