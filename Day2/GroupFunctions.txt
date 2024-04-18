@@ -1,0 +1,161 @@
+
+Group Functions / Aggregate Functions:
+---------------------------------------
+
+These functions work on multiple rows and return single value as  result.
+
+Group Functions ignore NULL Values while processing data with null.
+
+
+1. SUM
+2. AVG
+3. MIN
+4. MAX
+5. COUNT
+SQL> select eid , ename , salary , comm  from employee;
+
+       EID ENAME            SALARY       COMM
+---------- ------------ ---------- ----------
+       101 King              50000
+       102 Ford              35000
+       103 Smith             32000
+       104 Scott             25000        500
+       105 Tom               24000       1000
+       106 Jerry             20000       3000
+       107 Ravi              21000       2000
+       108 Adam              40000       4000
+       109 Raju              12000        500
+
+9 rows selected.
+
+SQL> SELECT  SUM(SALARY)  FROM  EMPLOYEE;
+
+SUM(SALARY)
+-----------
+     259000
+
+SQL> SELECT SUM(COMM)  FROM EMPLOYEE;
+
+ SUM(COMM)
+----------
+     11000
+
+SQL> SELECT SALARY + COMM  FROM EMPLOYEE;
+
+SALARY+COMM
+-----------
+
+
+
+      25500
+      25000
+      23000
+      23000
+      44000
+      12500
+
+9 rows selected.
+
+SQL> SELECT AVG(SALARY)  FROM EMPLOYEE;
+
+AVG(SALARY)
+-----------
+ 28777.7778
+
+SQL> SELECT AVG(COMM)  FROM EMPLOYEE;
+
+ AVG(COMM)
+----------
+1833.33333
+
+SQL> SELECT  MAX(SALARY)  FROM EMPLOYEE;
+
+MAX(SALARY)
+-----------
+      50000
+
+SQL> SELECT  MIN(SALARY)  FROM EMPLOYEE;
+
+MIN(SALARY)
+-----------
+      12000
+
+SQL> SELECT  MAX(COMM)  FROM EMPLOYEE;
+
+ MAX(COMM)
+----------
+      4000
+
+SQL>
+SQL> SELECT  MIN(COMM)  FROM EMPLOYEE;
+
+ MIN(COMM)
+----------
+       500
+
+SQL> SELECT  MAX(DOJ)  FROM EMPLOYEE;
+
+MAX(DOJ)
+---------
+19-APR-24
+
+SQL> SELECT  MIN(DOJ)  FROM EMPLOYEE;
+
+MIN(DOJ)
+---------
+19-JUN-01
+
+SQL> SELECT COUNT(*)  FROM EMPLOYEE;
+
+  COUNT(*)
+----------
+         9
+
+SQL> SELECT COUNT(*)  FROM EMPLOYEE WHERE COMM   IS  NULL;
+
+  COUNT(*)
+----------
+         3
+
+SQL> SELECT COUNT(*)  FROM EMPLOYEE WHERE COMM   IS NOT  NULL;
+
+  COUNT(*)
+----------
+         6
+
+SQL> SELECT COUNT(COMM)  FROM EMPLOYEE;
+
+COUNT(COMM)
+-----------
+          6
+
+
+
+
+------------------------------------------------------------------------
+GROUP BY   clause:
+==================
+
+Group By clause is used to group the records based on specific column and also Group by consider Null value as one of the group.
+
+
+Group Employees records based on Job.
+
+NOTE: What ever column used in group by need not be present in select projection but any column present in select projection its compulsory to have it in group by clause.
+
+Ex:  SELECT  JOB , SUM(SALARY)  FROM EMPLOYEE GROUP BY JOB;  
+			// here JOB column in select is optional
+
+
+SELECT   SUM(SALARY)  FROM EMPLOYEE GROUP BY JOB;  // it is also fine
+
+
+Ex2:  SELECT  JOB , SUM(SALARY)  FROM EMPLOYEE ;  
+		// It is invalid group by job should be present  
+
+
+
+
+
+
+
