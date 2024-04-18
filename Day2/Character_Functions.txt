@@ -1,0 +1,247 @@
+
+SQL> SELECT  LOWER('javeed')  from DUAL;
+
+LOWER(
+------
+javeed
+
+SQL> SELECT  LOWER('JAVEED')  from DUAL;
+
+LOWER(
+------
+javeed
+
+SQL> SELECT  LOWER('JAVEED')  AS LOWER from DUAL;
+
+LOWER
+------
+javeed
+
+SQL> SELECT LOWER(ename) from employee;
+
+LOWER(ENAME)
+------------
+king
+ford
+smith
+scott
+tom
+jerry
+ravi
+adam
+raju
+
+9 rows selected.
+
+SQL> SELECT UPPER(ename) from employee;
+
+UPPER(ENAME)
+------------
+KING
+FORD
+SMITH
+SCOTT
+TOM
+JERRY
+RAVI
+ADAM
+RAJU
+
+9 rows selected.
+
+SQL> SELECT INITCAP(ename) from employee;
+
+INITCAP(ENAM
+------------
+King
+Ford
+Smith
+Scott
+Tom
+Jerry
+Ravi
+Adam
+Raju
+
+9 rows selected.
+
+SQL> SELECT  CONCAT('HELLO ','FRIENDS') FROM DUAL;
+
+CONCAT('HELLO
+-------------
+HELLO FRIENDS
+
+SQL> SELECT CONCAT(ename  , job)  from employee;
+
+CONCAT(ENAME,JOB)
+---------------------------
+KingPRESIDENT
+FordManager
+SmithManager
+ScottDeveloper
+TomDeveloper
+JerryTester
+RaviTester
+AdamAnalyst
+RajuClerk
+
+9 rows selected.
+
+SQL> SELECT  ename || ' IS A ' || job  from employee;
+
+ENAME||'ISA'||JOB
+---------------------------------
+King IS A PRESIDENT
+Ford IS A Manager
+Smith IS A Manager
+Scott IS A Developer
+Tom IS A Developer
+Jerry IS A Tester
+Ravi IS A Tester
+Adam IS A Analyst
+Raju IS A Clerk
+
+9 rows selected.
+
+SQL> SELECT   SUBSTR('ORACLE DATABASE' , 7 , 4) from dual;
+
+SUBS
+----
+ DAT
+
+SQL> SELECT   SUBSTR('ORACLE DATABASE' , 8 , 4) from dual;
+
+SUBS
+----
+DATA
+
+SQL> SELECT   SUBSTR('ORACLE DATABASE' , 8 , 6) from dual;
+
+SUBSTR
+------
+DATABA
+
+SQL> SELECT   SUBSTR('ORACLE DATABASE' , 1 , 6) from dual;
+
+SUBSTR
+------
+ORACLE
+
+SQL> select  ' JAVEED'  FROM DUAL;
+
+'JAVEED
+-------
+ JAVEED
+
+SQL> select   LTRIM(' JAVEED')  FROM DUAL;
+
+LTRIM(
+------
+JAVEED
+
+SQL> select   LTRIM(' JAV  EED')  FROM DUAL;
+
+LTRIM('J
+--------
+JAV  EED
+
+SQL> select   TRIM(' JAV  EED')  FROM DUAL;
+
+TRIM('JA
+--------
+JAV  EED
+
+SQL> select   TRIM(' JAV  EED ')  FROM DUAL;
+
+TRIM('JA
+--------
+JAV  EED
+
+SQL> select  LPAD('ORACLE',1,'*')  FROM DUAL;
+
+L
+-
+O
+
+SQL> select  LPAD('ORACLE',7,'*')  FROM DUAL;
+
+LPAD('O
+-------
+*ORACLE
+
+SQL> select  LPAD('ORACLE',9,'*')  FROM DUAL;
+
+LPAD('ORA
+---------
+***ORACLE
+
+SQL> select  LPAD('ORACLE',7,'$')  FROM DUAL;
+
+LPAD('O
+-------
+$ORACLE
+
+SQL> select  LPAD('ORACLE',7,'AAA')  FROM DUAL;
+
+LPAD('O
+-------
+AORACLE
+
+SQL> select  LPAD('ORACLE',9,'AAA')  FROM DUAL;
+
+LPAD('ORA
+---------
+AAAORACLE
+
+SQL> select  RPAD('ORACLE',9,'*')  FROM DUAL;
+
+RPAD('ORA
+---------
+ORACLE***
+
+SQL> SELECT LEGTH('ORACLE DATABASE')  length  from dual;
+SELECT LEGTH('ORACLE DATABASE')  length  from dual
+       *
+ERROR at line 1:
+ORA-00904: "LEGTH": invalid identifier
+
+
+SQL> SELECT LENGTH('ORACLE DATABASE')  length  from dual;
+
+    LENGTH
+----------
+        15
+
+SQL> SELECT LENGTH(ENAME) , ENAME  FROM EMPLOYEE;
+
+LENGTH(ENAME) ENAME
+------------- ------------
+            4 King
+            4 Ford
+            5 Smith
+            5 Scott
+            3 Tom
+            5 Jerry
+            4 Ravi
+            4 Adam
+            4 Raju
+
+9 rows selected.
+
+SQL> SELECT  INSTR('DATABASE','A',1,3) from dual;
+
+INSTR('DATABASE','A',1,3)
+-------------------------
+                        6
+
+SQL> SELECT  INSTR('DATABASE','A',1,2) from dual;
+
+INSTR('DATABASE','A',1,2)
+-------------------------
+                        4
+
+SQL> SELECT  INSTR('THIS IS DATA  STORE IN DATABASE TO SAVE DATA','DATA',1,1) FROM DUAL;
+
+INSTR('THISISDATASTOREINDATABASETOSAVEDATA','DATA',1,1)
+-------------------------------------------------------
+                                                      9

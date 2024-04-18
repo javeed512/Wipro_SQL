@@ -1,0 +1,262 @@
+SQL> SELECT  SYSDATE FROM DUAL;
+
+SYSDATE
+---------
+18-APR-24
+
+SQL> SELECT  ADD_MONTHS(SYSDATE,1) FROM DUAL;
+
+ADD_MONTH
+---------
+18-MAY-24
+
+SQL> SELECT  ADD_MONTHS(SYSDATE,6) FROM DUAL;
+
+ADD_MONTH
+---------
+18-OCT-24
+
+SQL> SELECT  ADD_MONTHS(SYSDATE,-6) FROM DUAL;
+
+ADD_MONTH
+---------
+18-OCT-23
+
+SQL> SELECT  MONTHS_BETWEEN('15-AUG-1947','18-APR-2024')  No_of_Months from dual;
+
+NO_OF_MONTHS
+------------
+  -920.09677
+
+SQL> SELECT  MONTHS_BETWEEN('18-APR-2024','15-AUG-1947')  No_of_Months from dual;
+
+NO_OF_MONTHS
+------------
+  920.096774
+
+SQL> SELECT  LAST_DAY(SYSDATE) FROM DUAL;
+
+LAST_DAY(
+---------
+30-APR-24
+
+SQL> SELECT ENAME,DOJ FROM EMPLOYEE;
+
+ENAME        DOJ
+------------ ---------
+King         19-JUN-01
+Ford         21-AUG-01
+Smith        16-NOV-01
+Scott        03-JAN-02
+Tom          20-FEB-02
+Jerry        18-MAR-02
+Ravi         23-APR-02
+Adam         18-APR-24
+Raju         19-APR-24
+
+9 rows selected.
+
+SQL> SELECT ENAME, LAST_DAY(DOJ)  FROM EMPLOYEE;
+
+ENAME        LAST_DAY(
+------------ ---------
+King         30-JUN-01
+Ford         31-AUG-01
+Smith        30-NOV-01
+Scott        31-JAN-02
+Tom          28-FEB-02
+Jerry        31-MAR-02
+Ravi         30-APR-02
+Adam         30-APR-24
+Raju         30-APR-24
+
+9 rows selected.
+
+SQL> SELECT  NEXT_DAY(SYSDATE,'Saturday') from dual;
+
+NEXT_DAY(
+---------
+20-APR-24
+
+SQL> select  NEXT_DAY(doj , 'SUNDAY') from Employee;
+
+NEXT_DAY(
+---------
+24-JUN-01
+26-AUG-01
+18-NOV-01
+06-JAN-02
+24-FEB-02
+24-MAR-02
+28-APR-02
+21-APR-24
+21-APR-24
+
+9 rows selected.
+
+SQL> select  ENAME,   NEXT_DAY(doj , 'SUNDAY')  WEEKEND from Employee;
+
+ENAME        WEEKEND
+------------ ---------
+King         24-JUN-01
+Ford         26-AUG-01
+Smith        18-NOV-01
+Scott        06-JAN-02
+Tom          24-FEB-02
+Jerry        24-MAR-02
+Ravi         28-APR-02
+Adam         21-APR-24
+Raju         21-APR-24
+
+9 rows selected.
+
+SQL> SELECT CURRENT_DATE() FROM DUAL;
+SELECT CURRENT_DATE() FROM DUAL
+                   *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> SELECT CURRENT_DATE FROM DUAL;
+
+CURRENT_D
+---------
+18-APR-24
+
+SQL> SELECT CURRENT_TIMESTAMP FROM DUAL;
+
+CURRENT_TIMESTAMP
+---------------------------------------------------------------------------
+18-APR-24 01.18.14.241000 PM +05:30
+
+SQL> SELET EXTRACT( MONTH FROM '19-jun-1990') from dual;
+SP2-0734: unknown command beginning "SELET EXTR..." - rest of line ignored.
+SQL> SELECT EXTRACT( MONTH FROM '19-jun-1990') from dual;
+SELECT EXTRACT( MONTH FROM '19-jun-1990') from dual
+                           *
+ERROR at line 1:
+ORA-30076: invalid extract field for extract source
+
+
+SQL> SELECT EXTRACT( MONTH FROM '19-JUN-1990') from dual;
+SELECT EXTRACT( MONTH FROM '19-JUN-1990') from dual
+                           *
+ERROR at line 1:
+ORA-30076: invalid extract field for extract source
+
+
+SQL> SELECT EXTRACT( MONTH FROM "19-JUN-1990") from dual;
+SELECT EXTRACT( MONTH FROM "19-JUN-1990") from dual
+                           *
+ERROR at line 1:
+ORA-00904: "19-JUN-1990": invalid identifier
+
+
+SQL> SELECT EXTRACT( MONTH FROM SYSDATE) from dual;
+
+EXTRACT(MONTHFROMSYSDATE)
+-------------------------
+                        4
+
+SQL> SELECT EXTRACT( MONTH FROM  DOJ) from EMPLOYEE;
+
+EXTRACT(MONTHFROMDOJ)
+---------------------
+                    6
+                    8
+                   11
+                    1
+                    2
+                    3
+                    4
+                    4
+                    4
+
+9 rows selected.
+
+SQL> SELECT EXTRACT( year FROM  DOJ) from EMPLOYEE;
+
+EXTRACT(YEARFROMDOJ)
+--------------------
+                2001
+                2001
+                2001
+                2002
+                2002
+                2002
+                2002
+                2024
+                2024
+
+9 rows selected.
+
+SQL> SELECT EXTRACT( day FROM  DOJ) from EMPLOYEE;
+
+EXTRACT(DAYFROMDOJ)
+-------------------
+                 19
+                 21
+                 16
+                  3
+                 20
+                 18
+                 23
+                 18
+                 19
+
+9 rows selected.
+
+SQL> select   ename , doj - sysdate  date from employee;
+select   ename , doj - sysdate  date from employee
+                                *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select   ename , doj - sysdate as "date info" from employee;
+
+ENAME         date info
+------------ ----------
+King          -8339.558
+Ford          -8276.558
+Smith         -8189.558
+Scott         -8141.558
+Tom           -8093.558
+Jerry         -8067.558
+Ravi          -8031.558
+Adam          -.1328125
+Raju         .868043981
+
+9 rows selected.
+
+SQL> select   ename ,  sysdate - doj as "date info" from employee;
+
+ENAME         date info
+------------ ----------
+King         8339.55829
+Ford         8276.55829
+Smith        8189.55829
+Scott        8141.55829
+Tom          8093.55829
+Jerry        8067.55829
+Ravi         8031.55829
+Adam         .133148148
+Raju         -.86770833
+
+9 rows selected.
+
+SQL> select   ename ,  trunc(sysdate) - trunc(doj) as "date info" from employee;
+
+ENAME         date info
+------------ ----------
+King               8339
+Ford               8276
+Smith              8189
+Scott              8141
+Tom                8093
+Jerry              8067
+Ravi               8031
+Adam                  0
+Raju                 -1
+
+9 rows selected.

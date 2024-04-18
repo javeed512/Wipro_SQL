@@ -1,0 +1,107 @@
+SQL> SELECT  TRUNC(125.8123)  FROM DUAL;
+
+TRUNC(125.8123)
+---------------
+            125
+
+SQL> SELECT  TRUNC(125.8123,1)  FROM DUAL;
+
+TRUNC(125.8123,1)
+-----------------
+            125.8
+
+SQL> SELECT  TRUNC(125.8123,2)  FROM DUAL;
+
+TRUNC(125.8123,2)
+-----------------
+           125.81
+
+SQL> SELECT  TRUNC(125.8123,-1)  FROM DUAL;
+
+TRUNC(125.8123,-1)
+------------------
+               120
+
+SQL> SELECT  TRUNC(347.8123,-2)  FROM DUAL;
+
+TRUNC(347.8123,-2)
+------------------
+               300
+
+SQL> SELECT  TRUNC(347.8123,-3)  FROM DUAL;
+
+TRUNC(347.8123,-3)
+------------------
+                 0
+
+SQL> SELECT  TRUNC(129.8123,-1)  FROM DUAL;
+
+TRUNC(129.8123,-1)
+------------------
+               120
+
+SQL> SELECT  ROUND(167.1214) FROM DUAL;
+
+ROUND(167.1214)
+---------------
+            167
+
+SQL> SELECT  ROUND(167.1214,2) FROM DUAL;
+
+ROUND(167.1214,2)
+-----------------
+           167.12
+
+SQL> SELECT  ROUND(167.1299,2) FROM DUAL;
+
+ROUND(167.1299,2)
+-----------------
+           167.13
+
+SQL> SELECT  ROUND(167.1299,-1) FROM DUAL;
+
+ROUND(167.1299,-1)
+------------------
+               170
+
+SQL> SELECT  CEIL(15.7) FROM DUAL;
+
+CEIL(15.7)
+----------
+        16
+
+SQL> SELECT  CEIL(15.00001) FROM DUAL;
+
+CEIL(15.00001)
+--------------
+            16
+
+SQL> SELECT  FLOOR(4.999999) FROM DUAL;
+
+FLOOR(4.999999)
+---------------
+              4
+
+SQL> SELECT  ABS(-20)  FROM DUAL;
+
+  ABS(-20)
+----------
+        20
+
+SQL> SELECT  ABS(20)  FROM DUAL;
+
+   ABS(20)
+----------
+        20
+
+SQL> SELECT  power(2,2)  FROM DUAL;
+
+POWER(2,2)
+----------
+         4
+
+SQL> SELECT  SQRT(16)  FROM DUAL;
+
+  SQRT(16)
+----------
+         4

@@ -48,3 +48,536 @@ SQL> INSERT INTO Employee values(108,'Adam','Analyst',40000,4000,101,sysdate);
 SQL> INSERT INTO Employee values(109,'Raju','Clerk',12000,500,101, sysdate +1 );
 
 1 row created.
+
+
+
+
+
+
+SELECT Statement:
+==================
+
+SELECT  distinct {*/column names} FROM table/s  WHERE ...  GROUP BY  .. HAVING ..  ORDER BY asc/desc;
+
+get all records with all columns
+SQL> SELECT * FROM Employee;
+
+
+projecting specific columns from table
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE;
+
+select with where clause or filters.
+
+Comparison Operators  
+= , > , < , >= , <= , !=/<>/^=
+
+SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  SALARY > 30000;
+
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  SALARY > 30000;
+
+       EID ENAME        JOB                 SALARY
+---------- ------------ --------------- ----------
+       101 King         PRESIDENT            50000
+       102 Ford         Manager              35000
+       103 Smith        Manager              32000
+       108 Adam         Analyst              40000
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  SALARY >= 35000;
+
+       EID ENAME        JOB                 SALARY
+---------- ------------ --------------- ----------
+       101 King         PRESIDENT            50000
+       102 Ford         Manager              35000
+       108 Adam         Analyst              40000
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  SALARY  <= 35000;
+
+       EID ENAME        JOB                 SALARY
+---------- ------------ --------------- ----------
+       102 Ford         Manager              35000
+       103 Smith        Manager              32000
+       104 Scott        Developer            25000
+       105 Tom          Developer            24000
+       106 Jerry        Tester               20000
+       107 Ravi         Tester               21000
+       109 Raju         Clerk                12000
+
+7 rows selected.
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  SALARY  = 35000;
+
+       EID ENAME        JOB                 SALARY
+---------- ------------ --------------- ----------
+       102 Ford         Manager              35000
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  job = 'developer';
+
+no rows selected
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  job = 'Developer';
+
+       EID ENAME        JOB                 SALARY
+---------- ------------ --------------- ----------
+       104 Scott        Developer            25000
+       105 Tom          Developer            24000
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  job = 'Developer'  OR  job = 'Tester';
+
+       EID ENAME        JOB                 SALARY
+---------- ------------ --------------- ----------
+       104 Scott        Developer            25000
+       105 Tom          Developer            24000
+       106 Jerry        Tester               20000
+       107 Ravi         Tester               21000
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  salary = 25000 AND salary = 35000;
+
+no rows selected
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  salary = 25000 OR salary = 35000;
+
+       EID ENAME        JOB                 SALARY
+---------- ------------ --------------- ----------
+       102 Ford         Manager              35000
+       104 Scott        Developer            25000
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  salary = 25000 AND  job = 'Developer';
+
+       EID ENAME        JOB                 SALARY
+---------- ------------ --------------- ----------
+       104 Scott        Developer            25000
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  COMM != null;
+
+no rows selected
+
+SQL> select ename,comm from employee;
+
+ENAME              COMM
+------------ ----------
+King
+Ford
+Smith
+Scott               500
+Tom                1000
+Jerry              3000
+Ravi               2000
+Adam               4000
+Raju                500
+
+9 rows selected.
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  COMM = null;
+
+no rows selected
+
+SQL>
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  COMM  IS   null;
+
+       EID ENAME        JOB                 SALARY
+---------- ------------ --------------- ----------
+       101 King         PRESIDENT            50000
+       102 Ford         Manager              35000
+       103 Smith        Manager              32000
+
+SQL> SELECT EID, ENAME,JOB,SALARY   FROM EMPLOYEE  WHERE  COMM  IS NOT  null;
+
+       EID ENAME        JOB                 SALARY
+---------- ------------ --------------- ----------
+       104 Scott        Developer            25000
+       105 Tom          Developer            24000
+       106 Jerry        Tester               20000
+       107 Ravi         Tester               21000
+       108 Adam         Analyst              40000
+       109 Raju         Clerk                12000
+
+6 rows selected.
+
+SQL> SELECT EID, ENAME,JOB,SALARY , COMM   FROM EMPLOYEE  WHERE  COMM  IS NOT  null;
+
+       EID ENAME        JOB                 SALARY       COMM
+---------- ------------ --------------- ---------- ----------
+       104 Scott        Developer            25000        500
+       105 Tom          Developer            24000       1000
+       106 Jerry        Tester               20000       3000
+       107 Ravi         Tester               21000       2000
+       108 Adam         Analyst              40000       4000
+       109 Raju         Clerk                12000        500
+
+6 rows selected.
+
+
+SQL> SELECT  ENAME ,  SALARY + COMM  as Total  FROM EMPLOYEE;
+
+ENAME             TOTAL
+------------ ----------
+King
+Ford
+Smith
+Scott             25500
+Tom               25000
+Jerry             23000
+Ravi              23000
+Adam              44000
+Raju              12500
+
+9 rows selected.
+
+
+USING NVL() to deal with null values.
+
+
+SQL> SELECT  ENAME ,  SALARY + NVL(COMM , 0)  as Total  FROM EMPLOYEE;
+
+ENAME             TOTAL
+------------ ----------
+King              50000
+Ford              35000
+Smith             32000
+Scott             25500
+Tom               25000
+Jerry             23000
+Ravi              23000
+Adam              44000
+Raju              12500
+
+9 rows selected.
+
+
+
+LIKE Operator:
+--------------
+_   , % 
+
+_   : It means only one character , which can be any character.
+
+%   :  It means any number of characters , which can be any characters.
+
+
+SQL> select * from employee where  ename  LIKE   'S%';
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       103 Smith        Manager              32000                   101
+16-NOV-01
+
+       104 Scott        Developer            25000        500        102
+03-JAN-02
+
+
+SQL> select * from employee where  ename  LIKE   '%a%';
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       107 Ravi         Tester               21000       2000        103
+23-APR-02
+
+       108 Adam         Analyst              40000       4000        101
+18-APR-24
+
+       109 Raju         Clerk                12000        500        101
+19-APR-24
+
+
+
+SQL> select * from employee where  ename  LIKE   'T_m';
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       105 Tom          Developer            24000       1000        102
+20-FEB-02
+
+
+SQL> select * from employee where  ename  LIKE   '_a%';
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       107 Ravi         Tester               21000       2000        103
+23-APR-02
+
+       109 Raju         Clerk                12000        500        101
+19-APR-24
+
+
+
+SQL> select * from employee where  doj   LIKE  '%APR%';
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       107 Ravi         Tester               21000       2000        103
+23-APR-02
+
+       108 Adam         Analyst              40000       4000        101
+18-APR-24
+
+       109 Raju         Clerk                12000        500        101
+19-APR-24
+
+
+SQL> select * from employee where  doj   LIKE  '%24';
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       108 Adam         Analyst              40000       4000        101
+18-APR-24
+
+       109 Raju         Clerk                12000        500        101
+19-APR-24
+
+
+
+BETWEEN AND operator:
+=====================
+
+
+
+SQL> select * from employee where salary  between  25000 and 35000;
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       102 Ford         Manager              35000                   101
+21-AUG-01
+
+       103 Smith        Manager              32000                   101
+16-NOV-01
+
+       104 Scott        Developer            25000        500        102
+03-JAN-02
+
+
+SQL> select * from employee where doj  between   '01-JAN-2001' and '01-JAN-2002';
+
+
+
+IN Operator:
+------------
+
+select * from employee  where job  IN ('Developer','Tester','Manager');
+
+
+SQL> SELECT  'HELLO'   ||  ' friends'   AS  message from dual;
+
+MESSAGE
+-------------
+HELLO friends
+
+SQL> SELECT  100 || ' Rupees'   AS  message from dual;
+
+MESSAGE
+----------
+100 Rupees
+
+SQL> SELECT   'MR. ' ||  ENAME FROM EMPLOYEE;
+
+
+
+
+
+format:   Hello ename  you got the hike of  salary*2 $;
+
+SELECT 'Hello '||ename|| ' you got the hike of ' || salary*2 || '$';
+
+
+
+
+
+
+
+
+
+Single Value Operators:
+= , > , < , != , >= , <=
+
+Multi Value Operators:
+
+IN , ANY , SOME  , ALL 
+
+
+SQL> select * from employee  where salary  IN (25000,35000,40000);
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       102 Ford         Manager              35000                   101
+21-AUG-01
+
+       104 Scott        Developer            25000        500        102
+03-JAN-02
+
+       108 Adam         Analyst              40000       4000        101
+18-APR-24
+
+
+SQL> select * from employee  where salary  =ANY (25000,35000,40000);
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       102 Ford         Manager              35000                   101
+21-AUG-01
+
+       104 Scott        Developer            25000        500        102
+03-JAN-02
+
+       108 Adam         Analyst              40000       4000        101
+18-APR-24
+
+
+SQL> select * from employee  where salary  >ANY (25000,35000,40000);
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       101 King         PRESIDENT            50000
+19-JUN-01
+
+       102 Ford         Manager              35000                   101
+21-AUG-01
+
+       103 Smith        Manager              32000                   101
+16-NOV-01
+
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       108 Adam         Analyst              40000       4000        101
+18-APR-24
+
+
+SQL> select * from employee  where salary  <ANY (25000,35000,40000);
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       102 Ford         Manager              35000                   101
+21-AUG-01
+
+       103 Smith        Manager              32000                   101
+16-NOV-01
+
+       104 Scott        Developer            25000        500        102
+03-JAN-02
+
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       105 Tom          Developer            24000       1000        102
+20-FEB-02
+
+       106 Jerry        Tester               20000       3000        103
+18-MAR-02
+
+       107 Ravi         Tester               21000       2000        103
+23-APR-02
+
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       109 Raju         Clerk                12000        500        101
+19-APR-24
+
+
+7 rows selected.
+
+SQL> select * from employee  where salary  =SOME (25000,35000,40000);
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       102 Ford         Manager              35000                   101
+21-AUG-01
+
+       104 Scott        Developer            25000        500        102
+03-JAN-02
+
+       108 Adam         Analyst              40000       4000        101
+18-APR-24
+
+
+SQL> select * from employee  where salary  =ALL (25000,35000,40000);
+
+no rows selected
+
+SQL> select * from employee  where salary  = 25000 and  salary = 35000 and salary = 40000;
+
+no rows selected
+
+SQL> select * from employee  where salary  > 25000 and  salary > 35000 and salary > 40000;
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       101 King         PRESIDENT            50000
+19-JUN-01
+
+
+SQL> select * from employee  where salary  >ALL (25000,35000,40000);
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       101 King         PRESIDENT            50000
+19-JUN-01
+
+
+SQL> select * from employee  where salary  <ALL (25000,35000,40000);
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       105 Tom          Developer            24000       1000        102
+20-FEB-02
+
+       106 Jerry        Tester               20000       3000        103
+18-MAR-02
+
+       107 Ravi         Tester               21000       2000        103
+23-APR-02
+
+
+       EID ENAME        JOB                 SALARY       COMM        MID
+---------- ------------ --------------- ---------- ---------- ----------
+DOJ
+---------
+       109 Raju         Clerk                12000        500        101
+19-APR-24
+
+
+
+
+
+
+
+
+
+
+
