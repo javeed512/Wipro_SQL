@@ -1,0 +1,50 @@
+
+
+Employee Table:
+
+
+CREATE  TABLE  Employee(
+             Eid NUMBER(3) PRIMARY KEY,
+	     EName   VARCHAR2(20) NOT NULL,
+             Job     VARCHAR2(30) ,
+	     SALARY  NUMBER(7,2),
+	     COMM    NUMBER(7,2),
+	     Mid     NUMBER(3)	,
+	     DOJ   DATE	
+);
+
+
+INSERT INTO Employee values(101,'King','PRESIDENT',50000,null,null,'19-JUN-2001');
+
+
+SQL> INSERT INTO Employee values(102,'Ford','Manager',35000,null,101,'21-AUG-2001');
+
+1 row created.
+
+SQL> INSERT INTO Employee values(103,'Smith','Manager',32000,null,101,'16-NOV-2001');
+
+1 row created.
+
+SQL> INSERT INTO Employee values(104,'Scott','Developer',25000,500,102,'03-JAN-2002');
+
+1 row created.
+
+SQL> INSERT INTO Employee values(105,'Tom','Developer',24000,1000,102,'20-FEB-2002');
+
+1 row created.
+
+SQL> INSERT INTO Employee values(106,'Jerry','Tester',20000,3000,103,'18-MAR-2002');
+
+1 row created.
+
+SQL> INSERT INTO Employee values(107,'Ravi','Tester',21000,2000,103,'23-APR-2002');
+
+1 row created.
+
+SQL> INSERT INTO Employee values(108,'Adam','Analyst',40000,4000,101,sysdate);
+
+1 row created.
+
+SQL> INSERT INTO Employee values(109,'Raju','Clerk',12000,500,101, sysdate +1 );
+
+1 row created.
