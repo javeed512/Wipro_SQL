@@ -1,0 +1,349 @@
+SQL> SELECT  SYSDATE + 1 FROM DUAL;
+
+SYSDATE+1
+---------
+19-APR-24
+
+SQL> SELECT  SYSDATE + 30 FROM DUAL;
+
+SYSDATE+3
+---------
+18-MAY-24
+
+SQL> SELECT  SYSDATE - 30 FROM DUAL;
+
+SYSDATE-3
+---------
+19-MAR-24
+
+SQL> SELECT EXTRACT (DD FROM SYSDATE)   FROM DUAL;
+SELECT EXTRACT (DD FROM SYSDATE)   FROM DUAL
+                   *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> SELECT   TO_CHAR(SYSDATE , 'DD MONTH  YEAR') FROM DUAL;
+
+TO_CHAR(SYSDATE,'DDMONTHYEAR')
+--------------------------------------------------------------------------------
+18 APRIL      TWENTY TWENTY-FOUR
+
+SQL> SELECT   TO_CHAR(DOJ , 'DD MONTH  YEAR') FROM EMPLOYEE;
+
+TO_CHAR(DOJ,'DDMONTHYEAR')
+--------------------------------------------------------------------------------
+19 JUNE       TWO THOUSAND ONE
+21 AUGUST     TWO THOUSAND ONE
+16 NOVEMBER   TWO THOUSAND ONE
+03 JANUARY    TWO THOUSAND TWO
+20 FEBRUARY   TWO THOUSAND TWO
+18 MARCH      TWO THOUSAND TWO
+23 APRIL      TWO THOUSAND TWO
+18 APRIL      TWENTY TWENTY-FOUR
+19 APRIL      TWENTY TWENTY-FOUR
+
+9 rows selected.
+
+SQL> SELECT   TO_CHAR(SYSDATE , 'DY  MON YYYY') FROM DUAL;
+
+TO_CHAR(SYSDATE,'DYMONYYYY')
+-------------------------------
+THU  APR 2024
+
+SQL> SELECT   TO_CHAR(SYSDATE , 'D    DD   DDD') FROM DUAL;
+
+TO_CHAR(SYSDA
+-------------
+5    18   109
+
+SQL> SELECT   TO_CHAR(SYSDATE , 'DAY') FROM DUAL;
+
+TO_CHAR(SYSDATE,'DAY')
+------------------------------------
+THURSDAY
+
+SQL> SELECT   TO_CHAR(SYSDATE , 'DAY  MONTH  YEAR') FROM DUAL;
+
+TO_CHAR(SYSDATE,'DAYMONTHYEAR')
+--------------------------------------------------------------------------------
+THURSDAY   APRIL      TWENTY TWENTY-FOUR
+
+SQL> SELECT   TO_CHAR(SYSDATE , 'DAY -  MONTH -  YEAR  HH:MI') FROM DUAL;
+
+TO_CHAR(SYSDATE,'DAY-MONTH-YEARHH:MI')
+--------------------------------------------------------------------------------
+THURSDAY  -  APRIL     -  TWENTY TWENTY-FOUR  02:55
+
+SQL> SELECT DOJ FROM EMPLOYEE;
+
+DOJ
+---------
+19-JUN-01
+21-AUG-01
+16-NOV-01
+03-JAN-02
+20-FEB-02
+18-MAR-02
+23-APR-02
+18-APR-24
+19-APR-24
+
+9 rows selected.
+
+SQL> SELECT  TO_CHAR(DOJ , 'DD-MM-YY') FROM EMPLOYEE;
+
+TO_CHAR(
+--------
+19-06-01
+21-08-01
+16-11-01
+03-01-02
+20-02-02
+18-03-02
+23-04-02
+18-04-24
+19-04-24
+
+9 rows selected.
+
+SQL> SELECT TO_CHAR(TRUNC(sysdate), ‘ddth fmMonth yy’)
+  2  'DATE'
+  3  FROM dual;
+ERROR:
+ORA-01756: quoted string not properly terminated
+
+
+SQL> SELECT TO_CHAR(TRUNC(sysdate), ‘ddth fmMonth yy’)  AS "DATE"  FROM DUAL;
+ERROR:
+ORA-01756: quoted string not properly terminated
+
+
+SQL> SELECT TO_CHAR(TRUNC(sysdate), 'ddth fmMonth yy')  AS "DATE"  FROM DUAL;
+
+DATE
+--------------------------------------------
+18th April 24
+
+SQL> SELECT TO_CHAR(TRUNC('01-jan-24'), 'ddth fmMonth yy')  AS "DATE"  FROM DUAL;
+SELECT TO_CHAR(TRUNC('01-jan-24'), 'ddth fmMonth yy')  AS "DATE"  FROM DUAL
+                     *
+ERROR at line 1:
+ORA-01722: invalid number
+
+
+SQL> SELECT TO_CHAR(TRUNC('01-jan-2024'), 'ddth fmMonth yy')  AS "DATE"  FROM DUAL;
+SELECT TO_CHAR(TRUNC('01-jan-2024'), 'ddth fmMonth yy')  AS "DATE"  FROM DUAL
+                     *
+ERROR at line 1:
+ORA-01722: invalid number
+
+
+SQL> SELECT TO_CHAR(TRUNC('01-JAN-2024'), 'ddth fmMonth yy')  AS "DATE"  FROM DUAL;
+SELECT TO_CHAR(TRUNC('01-JAN-2024'), 'ddth fmMonth yy')  AS "DATE"  FROM DUAL
+                     *
+ERROR at line 1:
+ORA-01722: invalid number
+
+
+SQL> SELECT TO_CHAR(TRUNC('1-JAN-2024'), 'ddth fmMonth yy')  AS "DATE"  FROM DUAL;
+SELECT TO_CHAR(TRUNC('1-JAN-2024'), 'ddth fmMonth yy')  AS "DATE"  FROM DUAL
+                     *
+ERROR at line 1:
+ORA-01722: invalid number
+
+
+SQL> SELECT TO_CHAR(SYSDATE , 'Q') FROM DUAL;
+
+T
+-
+2
+
+SQL> SELECT EID,ENAME,JOB,DOJ FROM EMPLOYEE;
+
+       EID ENAME        JOB             DOJ
+---------- ------------ --------------- ---------
+       101 King         PRESIDENT       19-JUN-01
+       102 Ford         Manager         21-AUG-01
+       103 Smith        Manager         16-NOV-01
+       104 Scott        Developer       03-JAN-02
+       105 Tom          Developer       20-FEB-02
+       106 Jerry        Tester          18-MAR-02
+       107 Ravi         Tester          23-APR-02
+       108 Adam         Analyst         18-APR-24
+       109 Raju         Clerk           19-APR-24
+
+9 rows selected.
+
+SQL> SELECT EID,ENAME,JOB,DOJ FROM EMPLOYEE  WHERE  DOJ = '19-06-2001';
+SELECT EID,ENAME,JOB,DOJ FROM EMPLOYEE  WHERE  DOJ = '19-06-2001'
+                                                     *
+ERROR at line 1:
+ORA-01843: not a valid month
+
+
+SQL> select   TO_DATE('19-06-2001' , 'dd-mon-yyyy') from dual;
+select   TO_DATE('19-06-2001' , 'dd-mon-yyyy') from dual
+                 *
+ERROR at line 1:
+ORA-01843: not a valid month
+
+
+SQL> select   TO_DATE('19-06-2001' , 'dd-mm-yyyy') from dual;
+
+TO_DATE('
+---------
+19-JUN-01
+
+SQL> SELECT EID,ENAME,JOB,DOJ FROM EMPLOYEE  WHERE  DOJ =  TO_DATE('19-06-2001' , 'DD-MM-YY');
+
+       EID ENAME        JOB             DOJ
+---------- ------------ --------------- ---------
+       101 King         PRESIDENT       19-JUN-01
+
+SQL> SELECT EID,ENAME,JOB,DOJ FROM EMPLOYEE  WHERE  DOJ =  TO_DATE('June 19,2001' , 'Month DD,YYYY');
+
+       EID ENAME        JOB             DOJ
+---------- ------------ --------------- ---------
+       101 King         PRESIDENT       19-JUN-01
+
+SQL> SELECT  TO_TIMESTAMP(SYSDATE , 'DD-MM-YY') FROM DUAL;
+
+TO_TIMESTAMP(SYSDATE,'DD-MM-YY')
+---------------------------------------------------------------------------
+18-APR-24 12.00.00 AM
+
+SQL> SELECT  TO_TIMESTAMP(DOJ , 'DD-MM-YY') FROM EMPLOYEE;
+
+TO_TIMESTAMP(DOJ,'DD-MM-YY')
+---------------------------------------------------------------------------
+19-JUN-01 12.00.00 AM
+21-AUG-01 12.00.00 AM
+16-NOV-01 12.00.00 AM
+03-JAN-02 12.00.00 AM
+20-FEB-02 12.00.00 AM
+18-MAR-02 12.00.00 AM
+23-APR-02 12.00.00 AM
+18-APR-24 12.00.00 AM
+19-APR-24 12.00.00 AM
+
+9 rows selected.
+
+SQL> SELECT  '5000'+100  FROM DUAL;
+
+'5000'+100
+----------
+      5100
+
+SQL> SELECT  '5000'||100  FROM DUAL;
+
+'5000'|
+-------
+5000100
+
+SQL> SELECT  TO_NUMBER('5000') FROM DUAL;
+
+TO_NUMBER('5000')
+-----------------
+             5000
+
+SQL> SELECT TO_CHAR(50000 , '$99999.00') FROM DUAL;
+
+TO_CHAR(50
+----------
+ $50000.00
+
+SQL> SELECT TO_CHAR(SALARY , '$99999.00') SALARY_IN_DOLLER FROM EMPLOYEE;
+
+SALARY_IN_
+----------
+ $50000.00
+ $35000.00
+ $32000.00
+ $25000.00
+ $24000.00
+ $20000.00
+ $21000.00
+ $40000.00
+ $12000.00
+
+9 rows selected.
+
+SQL> SELECT  NVL2(NULL,'HI','BYE')  FROM DUAL;
+
+NVL
+---
+BYE
+
+SQL> SELECT  NVL2(50,'HI','BYE')  FROM DUAL;
+
+NV
+--
+HI
+
+SQL> SELECT  NULLIF(1,1)  FROM DUAL;
+
+NULLIF(1,1)
+-----------
+
+
+SQL> SELECT  NULLIF(1,3)  FROM DUAL;
+
+NULLIF(1,3)
+-----------
+          1
+
+SQL> SELECT ENAME , SALARY ,
+  2    CASE
+  3     WHEN SALARY > 5000  AND  SALARY < 15000  THEN 'OK'
+  4      WHEN SALARY > 15000 AND SALARY < 25000 THEN 'GOOD'
+  5      WHEN SALARY > 25000 AND  SALARY < 5000 THEN 'VERY GOOD'
+  6    ELSE
+  7     'EXCELLENT'
+  8  END CASE   FROM EMPLOYEE;
+
+ENAME            SALARY CASE
+------------ ---------- ---------
+King              50000 EXCELLENT
+Ford              35000 EXCELLENT
+Smith             32000 EXCELLENT
+Scott             25000 EXCELLENT
+Tom               24000 GOOD
+Jerry             20000 GOOD
+Ravi              21000 GOOD
+Adam              40000 EXCELLENT
+Raju              12000 OK
+
+9 rows selected.
+
+SQL> SELECT   ENAME, JOB  , DECODE('Developer','Your Coder' , 'Tester' ,' Your  QA' , 'Others') from employee; 
+
+ENAME        JOB             D
+------------ --------------- -
+King         PRESIDENT
+Ford         Manager
+Smith        Manager
+Scott        Developer
+Tom          Developer
+Jerry        Tester
+Ravi         Tester
+Adam         Analyst
+Raju         Clerk
+
+9 rows selected.
+
+SQL> SELECT   ENAME, JOB  , DECODE(JOB,  'Developer','Your Coder' , 'Tester' ,' Your    QA' , 'Others') from employee;
+
+ENAME        JOB             DECODE(JOB
+------------ --------------- ----------
+King         PRESIDENT       Others
+Ford         Manager         Others
+Smith        Manager         Others
+Scott        Developer       Your Coder
+Tom          Developer       Your Coder
+Jerry        Tester           Your      QA
+Ravi         Tester           Your      QA
+Adam         Analyst         Others
+Raju         Clerk           Others
+
+9 rows selected.
