@@ -1,0 +1,97 @@
+
+SUB QUERIES:
+===========
+
+1. Get the details  for those employees whose salary is more than "Tom";
+
+
+ SELECT  EID,ENAME,SALARY,JOB  from Employee where salary  > 
+				 ( SELECT  salary  from Employee  where ENAME = 'Tom');
+
+2. Get the details for those employees who are working at Banglore location.
+
+select   EID,ENAME,SALARY,JOB , dno  from Employee where DNO =                                                                   (select DNO from Dept where Location = 'Banglore');
+
+
+When the WHERE clause needs a set of values which can be only
+obtained from another query, the Sub‐query is used. In the WHERE
+clause it can become a part of the following predicates
+->COMPARISON Predicate
+->IN Predicate
+->ANY or ALL Predicate
+->EXISTS Predicate.
+•It can be also used as a part of the condition in the HAVING clause.
+
+Multi Row Operators used in SUB QUERIES.
+
+IN operator:
+------------
+SQL> select   EID,ENAME,SALARY,JOB , dno  from Employee where DNO   IN                                      (select DNO from Dept where Location = 'Hyderabad' OR Location = 'Chennai');
+
+
+
+
+Get the details for those employees whose salary is greater than "Tom"  OR   "Raju"
+
+SQL> Select EID,ENAME,JOB,SALARY  from Employee where salary >ANY                                             (Select  salary  from Employee  Where  Ename = 'Tom'  OR  Ename ='Raju');
+
+
+
+Get the details for those employees whose salary is LESS than "Tom"  OR   "Raju"
+
+SQL> Select EID,ENAME,JOB,SALARY  from Employee where salary <ANY                                          (Select  salary  from Employee  Where  Ename = 'Tom'  OR  Ename ='Raju');
+
+
+
+Get the details for those employees whose salary is greater than "Tom"  AND   "Raju"
+
+SQL> Select EID,ENAME,JOB,SALARY  from Employee where salary >ALL                                       (Select  salary  from Employee  Where  Ename = 'Tom'  OR  Ename ='Raju');
+
+
+GET the details for that employee whose salary is least in company.
+
+ SELECT EID,ENAME,SALARY,JOB  FROM EMPLOYEE WHERE  SALARY = ( SELECT MIN(SALARY)  FROM EMPLOYEE );
+
+Get the details for those employees whose salary is greater than avg salary of dept no 10.
+
+ SELECT EID,ENAME,SALARY , JOB FROM EMPLOYEE WHERE SALARY >ANY                                           (SELECT    AVG(SALARY)  FROM EMPLOYEE  WHERE DNO = 10    GROUP BY DNO);
+
+
+Get the details for those employees whose salary is greater than avg salary of their dept but avg salary should be greater than Tom's salary.
+
+SQL>  SELECT EID,ENAME,SALARY , JOB FROM EMPLOYEE WHERE SALARY >ANY                                       (SELECT    AVG(SALARY)  FROM EMPLOYEE     GROUP BY DNO  HAVING AVG(SALARY) >                                         (SELECT SALARY FROM EMPLOYEE WHERE ENAME = 'Tom'));
+
+
+
+
+--------------------------------------------------------------------------
+
+Syntax for SUB QUERIES.
+
+
+1. select  * from table  where  column  {= / =any}  (sub query);
+2. select  * from table  having  column  {operator}  (sub query);
+
+
+
+3 . select  (sub query)  from table; 
+SQL> select  ename , salary  , ( select sum(salary) from employee ) - salary   SUM_SALARY     from employee ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
