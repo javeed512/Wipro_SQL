@@ -1,0 +1,234 @@
+Oracle Joins:
+--------------
+
+Cartesion Product 
+SQL> SELECT  EID , ENAME  , JOB , D.DNO , DNAME ,LOCATION FROM  EMPLOYEE  E ,  DEPT D;
+
+Equi-Joins:
+-----------
+SQL> SELECT  EID , ENAME  , JOB , D.DNO , DNAME ,LOCATION FROM  EMPLOYEE  E ,  DEPT D    WHERE  E.DNO = D.DNO ;
+
+Non-Equi-Joins:
+---------------
+SQL> SELECT  EID , ENAME  , JOB , D.DNO , DNAME ,LOCATION FROM  EMPLOYEE  E ,  DEPT D    WHERE  E.DNO != D.DNO ;
+
+
+
+
+ANSI Joins/SQL Complaint joins:
+--------------------------------
+CROSS JOIN
+----------
+SELECT  EID , ENAME  , JOB , D.DNO , DNAME ,LOCATION FROM  EMPLOYEE  E  CROSS JOIN  DEPT D;
+
+INNER JOIN/Equi Join
+-------------
+ SELECT  EID , ENAME  , JOB , D.DNO , DNAME ,LOCATION FROM  EMPLOYEE  E  JOIN  DEPT D  
+ ON  E.DNO = D.DNO ;
+
+
+Note: For ANSI JOINs we can use WHERE clause for other conditional filters but not for PK , FK comparison or for equi join / non equi join comparison.
+
+SQL> SELECT  EID , ENAME  , JOB , D.DNO , DNAME ,LOCATION FROM                                        EMPLOYEE  E  INNER JOIN DEPT D  ON  (E.DNO = D.DNO)      WHERE  EID > 105;
+
+
+
+
+Non-Equi in ANSI:
+-----------------
+ SELECT  EID , ENAME  , JOB , D.DNO , DNAME ,LOCATION FROM  EMPLOYEE  E   JOIN  DEPT D  
+ ON  E.DNO != D.DNO ;
+
+
+NATURAL JOIN
+-------------
+SELECT  EID , ENAME  , JOB , DNO , DNAME ,LOCATION FROM  EMPLOYEE    NATURAL JOIN  DEPT ;  
+
+
+NATURAL JOIN with USING clause:
+-------------------------------
+
+SQL> SELECT  EID , ENAME  , JOB , DNO , DNAME ,LOCATION FROM  EMPLOYEE     JOIN  DEPT                                      USING  (DNO,DNO)  WHERE  EID > 105;
+
+note: using clause is actually used when column names are same but data types are different.
+
+
+
+
+
+ORACLE OUTER JOINS:
+-------------------
+(+)
+
+ORACLE LEFT OUTER JOIN
+-----------------------
+SQL> SELECT  EID , ENAME  , JOB , D.DNO , DNAME ,LOCATION FROM  EMPLOYEE  E ,  DEPT D                                       WHERE  E.DNO = D.DNO (+) ;   // LEFT OUTER JOIN
+
+ORACLE RIGHT OUTER JOIN
+------------------------
+SQL> SELECT  EID , ENAME  , JOB , D.DNO , DNAME ,LOCATION FROM  EMPLOYEE  E ,  DEPT D                                       WHERE  E.DNO  (+) = D.DNO  ;   // RIGHT OUTER JOIN
+
+
+NOTE: ORACLE does not support full outer join , so we need to use UNION for LEFT + RIGHT OUTER JOIN to get FULL OUTER JOIN
+EX:
+
+SQL> SELECT  EID , ENAME  , JOB , D.DNO , DNAME ,LOCATION FROM  EMPLOYEE  E ,  DEPT D                                       WHERE  E.DNO = D.DNO (+)
+  2  UNION                                                                                                        SELECT  EID , ENAME  , JOB , D.DNO , DNAME ,LOCATION FROM  EMPLOYEE  E ,  DEPT D                                       WHERE  E.DNO (+)   = D.DNO ;
+
+
+
+ANSI OUTER JOINS:
+==================
+
+LEFT OUTER JOIN
+----------------
+SQL> SELECT  EID, ENAME, JOB , D.DNO , DNAME , LOCATION   FROM                                                EMPLOYEE  E  LEFT OUTER JOIN   DEPT D     ON  (E.DNO = D.DNO);
+
+
+RIGHT OUTER JOIN
+----------------
+SQL> SELECT  EID, ENAME, JOB , D.DNO , DNAME , LOCATION   FROM                                                EMPLOYEE  E  RIGHT OUTER JOIN   DEPT D     ON  (E.DNO = D.DNO);
+
+
+
+FULL OUTER JOIN
+----------------
+SQL> SELECT  EID, ENAME, JOB , D.DNO , DNAME , LOCATION   FROM                                                EMPLOYEE  E   FULL OUTER JOIN   DEPT D     ON  (E.DNO = D.DNO);
+
+
+
+
+
+
+-----------------------------------------------------------------------------------
+SELF JOIN:
+----------
+
+
+SQL> SELECT EID,ENAME , JOB , SALARY , MID   FROM EMPLOYEE;
+
+       EID ENAME        JOB                 SALARY        MID
+---------- ------------ --------------- ---------- ----------
+       101 King         PRESIDENT            50000
+       102 Ford         Manager              35000        101
+       103 Smith        Manager              32000        101
+       104 Scott        Developer            25000        102
+       105 Tom          Developer            24000        102
+       106 Jerry        Tester               20000        103
+       107 Ravi         Tester               21000        103
+       108 Adam         Analyst              40000        101
+       109 Raju         Clerk                12000        101
+
+9 rows selected.
+
+SQL> SELECT  E.EID,E.MID , M.EID , M.MID    FROM   EMPLOYEE  E  , EMPLOYEE M   WHERE E.MID  = M.EID;
+
+       EID        MID        EID        MID
+---------- ---------- ---------- ----------
+       109        101        101
+       108        101        101
+       103        101        101
+       102        101        101
+       105        102        102        101
+       104        102        102        101
+       107        103        103        101
+       106        103        103        101
+
+8 rows selected.
+
+SQL> SELECT EID , ENAME ,SALARY , JOB , MID  FROM EMPLOYEE;
+
+       EID ENAME            SALARY JOB                    MID
+---------- ------------ ---------- --------------- ----------
+       101 King              50000 PRESIDENT
+       102 Ford              35000 Manager                101
+       103 Smith             32000 Manager                101
+       104 Scott             25000 Developer              102
+       105 Tom               24000 Developer              102
+       106 Jerry             20000 Tester                 103
+       107 Ravi              21000 Tester                 103
+       108 Adam              40000 Analyst                101
+       109 Raju              12000 Clerk                  101
+
+9 rows selected.
+
+SQL> SELECT EID , ENAME ,SALARY , JOB , MID  FROM EMPLOYEE  WHERE EID = MID;
+
+no rows selected
+
+SQL> SELECT EID , ENAME ,SALARY , JOB , MID  FROM EMPLOYEE  WHERE EID IN (101,102,103);
+
+       EID ENAME            SALARY JOB                    MID
+---------- ------------ ---------- --------------- ----------
+       101 King              50000 PRESIDENT
+       102 Ford              35000 Manager                101
+       103 Smith             32000 Manager                101
+
+SQL> SELECT  E.EID , E.ENAME , E.SALARY  ,    M.EID , M.ENAME , M.SALARY     FROM  EMPLOYEE E  , EMPLOYEE M    WHERE    E.MID   = M.EID;
+
+       EID ENAME            SALARY        EID ENAME            SALARY
+---------- ------------ ---------- ---------- ------------ ----------
+       109 Raju              12000        101 King              50000
+       108 Adam              40000        101 King              50000
+       103 Smith             32000        101 King              50000
+       102 Ford              35000        101 King              50000
+       105 Tom               24000        102 Ford              35000
+       104 Scott             25000        102 Ford              35000
+       107 Ravi              21000        103 Smith             32000
+       106 Jerry             20000        103 Smith             32000
+
+8 rows selected.
+
+SQL>
+SQL> SELECT  E.EID , E.ENAME , E.SALARY  ,    M.EID , M.ENAME , M.SALARY     FROM  EMPLOYEE E  LEFT OUTER JOIN EMPLOYEE M    WHERE    E.MID   = M.EID;
+SELECT  E.EID , E.ENAME , E.SALARY  ,    M.EID , M.ENAME , M.SALARY     FROM  EMPLOYEE E  LEFT OUTER JOIN EMPLOYEE M   WHERE    E.MID   = M.EID
+                                                                                                                        *
+ERROR at line 1:
+ORA-00905: missing keyword
+
+
+SQL> SELECT  E.EID , E.ENAME , E.SALARY  ,    M.EID , M.ENAME , M.SALARY     FROM  EMPLOYEE  , EMPLOYEE M    WHERE    E.MID   = M.EID;
+SELECT  E.EID , E.ENAME , E.SALARY  ,    M.EID , M.ENAME , M.SALARY     FROM  EMPLOYEE  , EMPLOYEE M    WHERE  E.MID    = M.EID
+                                                                                                                 *
+ERROR at line 1:
+ORA-00904: "E"."MID": invalid identifier
+
+
+SQL> SELECT  E.EID , E.ENAME , E.SALARY  ,    M.EID , M.ENAME , M.SALARY     FROM  EMPLOYEE E  , EMPLOYEE M    WHERE    E.MID   = M.EID;
+
+       EID ENAME            SALARY        EID ENAME            SALARY
+---------- ------------ ---------- ---------- ------------ ----------
+       109 Raju              12000        101 King              50000
+       108 Adam              40000        101 King              50000
+       103 Smith             32000        101 King              50000
+       102 Ford              35000        101 King              50000
+       105 Tom               24000        102 Ford              35000
+       104 Scott             25000        102 Ford              35000
+       107 Ravi              21000        103 Smith             32000
+       106 Jerry             20000        103 Smith             32000
+
+8 rows selected.
+
+SQL> SELECT  E.EID  , M.EID , M.MID  FROM    EMPLOYEE E , EMPLOYEE M WHERE  E.MID = M.EID;
+
+       EID        EID        MID
+---------- ---------- ----------
+       109        101
+       108        101
+       103        101
+       102        101
+       105        102        101
+       104        102        101
+       107        103        101
+       106        103        101
+
+8 rows selected.
+
+
+
+
+
+
+
+
+
