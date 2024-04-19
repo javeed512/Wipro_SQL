@@ -1,0 +1,32 @@
+
+CREATE TABLE  DEPT (
+		DNO  number(2) PRIMARY KEY ,
+		DNAME  varchar2(20) UNIQUE,
+		LOCATION   varchar2(20)
+                );
+
+INSERT INTO  DEPT VALUES(10,'Development','Banglore');
+INSERT INTO  DEPT VALUES(20,'Testing','Chennai');
+INSERT INTO  DEPT VALUES(30,'Research','Hyderabad');
+INSERT INTO  DEPT VALUES(40,'Operation','Mumbai');
+INSERT INTO  DEPT VALUES(50,'Sales','Pune');
+
+
+SQL> ALTER  TABLE  Employee ADD(DNO  number(2)  REFERENCES  DEPT(DNO) );
+
+
+UPDATE DNO COLUMNS VALUES IN EMPLOYEE TABLE
+
+SQL> UPDATE  EMPLOYEE SET DNO = 10  WHERE EID IN (102,104,105);
+
+4 rows updated.
+
+SQL> UPDATE  EMPLOYEE SET DNO = 20  WHERE EID IN (103,106,107);
+
+3 rows updated.
+
+SQL> UPDATE  EMPLOYEE SET DNO = 30  WHERE EID IN (108);
+
+1 row updated.
+
+SQL> UPDATE  EMPLOYEE SET DNO = 40 WHERE EID = 101;
