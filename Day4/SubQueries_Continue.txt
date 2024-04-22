@@ -1,0 +1,65 @@
+Sub queries:-
+============
+
+Different ways of writing sub-queries
+
+1. select * from table  where ..  (subquery)   group by ...  having .. (subquery);
+SQL> select * from employee where dno = (select dno from dept where location = 'Hyderabad');      
+OR Alternate for above using Joins
+SQL> select eid , ename, job , salary ,d.dno  from Employee e , Dept d where e.dno = d.dno and                         location = 'Hyderabad';
+
+
+2. select (sub-query)  from table;
+
+SQL> select  EName, Salary , (select sum(salary) from employee) - salary  total_budget        from employee;
+
+3. select  * from  (sub-query) alias;
+
+SQL> select  eid,ename,salary,job  from  (select  EID,ENAME,SALARY,JOB from employee)  E;
+
+
+SQL> select  ename , DOJ  from  (select  EID,ENAME,SALARY,JOB from employee)  E;
+select  ename , DOJ  from  (select  EID,ENAME,SALARY,JOB from employee)  E
+                *
+ERROR at line 1:
+ORA-00904: "DOJ": invalid identifier
+
+select  *  from  (select  * from employee  WHERE Job IN ('Developer','Tester'))  E;
+
+
+CO-RELATED SUB-QUERIES:
+=======================
+
+Oracle performs a correlated subquery when the subquery references a column from a table referred to in the parent statement. A correlated subquery is evaluated once for each row processed by the parent statement. The parent statement can be a SELECT , UPDATE , or DELETE statement.
+
+Corelated sub query in update statment:
+
+SQL> update  designation_masters set  design_name = 'Teacher'                                 where design_code =(select design_code from designation_masters where design_name= 'Reader');
+
+Corelated sub query in delete statement:
+
+SQL> delete  designation_masters where   design_code =                                               (select design_code from designation_masters where design_name = 'Lecturer');
+
+
+Sub query to CREATE Copy of  table with or without records:
+-------------------------------------------------------------
+with records
+SQL> CREATE TABLE  Employee2  AS (select * from Employee);
+
+
+without records
+SQL> CREATE TABLE Employee3  AS (select * from employee  where  1 = 2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,109 @@
+Constraints:
+============
+
+Set of rules which is recommend to follow are known as constraints in sql.
+
+
+SQL Constraints:
+
+1. PRIMARY KEY
+2. FOREIGN KEY
+3. NOT NULL
+4. UNIQUE
+5. CHECK 
+
+Note: All these constraints can be used at column level as well as table level except NOT NULL which can be used only at column level.
+
+
+PRIMARY KEY:
+------------
+Any column declare with P.K will be Not Null and Unique in nature.
+In a table only one column can be declare as primary key
+A table with primary key can be called as Master/Parent table.
+
+FOREIGN KEY:
+------------
+Any column declare with references keyword can be consider as foreign key column , and that table is known as child table or detail table.
+
+-> F.K can have only those set of values which are present in P.K Column
+-> F.K can have duplicate as well as null values in it.
+
+NOT NULL:
+---------
+It is used only at column level , the column with NOT NULL Constraint cannot have null values.
+
+
+UNIQUE: 
+The column with UNIQUE Constraint cannot have duplicate values but it can have null values.
+Using unique constraint also table can be treated as Parent table.
+
+CHECK:
+It is used for  applying custom constraints by the developers.
+EX:  ENAME values should be enter only in UPPER CASE
+     SALARY should be greater than 1000;
+     JOB should be either MANAGER or DEVELOPER or TESTER 
+
+
+-----------------------------------
+Column Level constraint:
+
+CREATE TABLE Product(Pid  NUMBER(2) Constraint Product_Pid_PK PRIMARY KEY );  
+							// column level constraint
+
+
+Table Level  constraint 
+------------------------
+CREATE TABLE  Product(
+			Pid NUMBER(2),
+			PName VARCHAR2(12),
+			DOP  DATE ,
+			Quantity NUMBER(4),
+			Brand  Varchar2(12) ,
+			Cid  NUMBER(3)  ,
+	Constraint Product_Pid_Brand_PK PRIMARY KEY (Pid,Brand),
+	Constraint  Product_Cid_FK    FOREIGN KEY (Cid)	REFERENCES Customer(Cid)	 	
+	);
+
+pid  brand
+10   apple
+20   samsung
+30    redmi
+10    mac
+
+
+
+
+CHECK constraint:
+------------------
+
+SQL> ALTER TABLE  PRODUCT MODIFY (BRAND  VARCHAR2(12) constraint  product_brand_chk                                   CHECK(BRAND IN ('Apple','Samsung','Redmi','Boat')));
+
+Table altered.
+
+SQL> INSERT INTO PRODUCT VALUES(30,'Watch',sysdate-1,3,'INFINIX',502);
+INSERT INTO PRODUCT VALUES(30,'Watch',sysdate-1,3,'INFINIX',502)
+*
+ERROR at line 1:
+ORA-02290: check constraint (SYSTEM.PRODUCT_BRAND_CHK) violated
+
+
+SQL> INSERT INTO PRODUCT VALUES(30,'Watch',sysdate-1,3,'Redmi',502);
+
+1 row created.
+	
+SQL> ALTER TABLE  CUSTOMER  MODIFY(CNAME  VARCHAR2(20)  CHECK(CNAME = UPPER(CNAME)));
+
+SQL> INSERT INTO CUSTOMER VALUES(503,'javeed','pune','javeed@gmail.com',9988443322);
+INSERT INTO CUSTOMER VALUES(503,'javeed','pune','javeed@gmail.com',9988443322)
+*
+ERROR at line 1:
+ORA-02290: check constraint (SYSTEM.SYS_C007019) violated
+
+
+SQL> INSERT INTO CUSTOMER VALUES(503,'JAVEED','pune','javeed@gmail.com',9988443322);
+
+1 row created.
+
+
+
+

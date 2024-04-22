@@ -1,0 +1,89 @@
+DDL: Data Definition Language:
+
+When ever user wants deal with Object Structures or Models then one can use DDL Commands.
+
+All DDL Commands are auto-commit.
+
+Using DDL Commands we can CREATE/ALTER Objects like Tables,Views,Users,Sequences,Indexes and also PL/SQL Procedures,Functions,Triggers etc
+
+DDL Commands:
+CREATE: This command is used to create an Database object structure.
+
+ALTER: This command is used to alter/modify Database object structure.
+
+DROP : This command is used to drop any database object
+
+TRUNCATE: This command is used to truncate tables or views
+
+RENAME : This command is used to Rename any Database object.  
+
+
+
+
+
+CREATE :
+========
+We can create Tables,Views,Users etc
+
+syn:  create object object_name ..;
+
+ex: CREATE TABLE Customer(
+            Cid Number(3)  CONSTRAINT  Customer_Cid_PK  PRIMARY KEY ,
+	    CName Varchar(20) ,
+            Address  Varchar(20),
+            Email     varchar2(20)  CONSTRAINT Customer_Email_UNQ  UNIQUE 
+	);	
+
+
+ALTER:
+=======
+ALTER  options -  Add , Modify , Drop 
+
+ALTER Table Customer  ADD (Contact Number(10)   CONSTRAINT Customer_Contact_NN  NOT NULL);
+
+ALTER TABLE  Customer MODIFY(Contact Varchar2(13));
+
+ALTER TABLE  Customer DROP Column Address;
+ALTER TABLE  Customer DROP Constraint Customer_Email_UNQ;
+
+SQL> ALTER  TABLE EMP2  DROP  CONSTRAINT  EMP2_DOJ_NN;
+
+SQL> ALTER  TABLE  EMP2  MODIFY(DOJ  DATE  DEFAULT(SYSDATE)      CONSTRAINT  EMP2_DOJ_NN  NOT NULL   );
+
+
+DROP:
+======
+Drop command can be use to drop any objects
+
+Ex: We can drop User , Table , Views , Indexes , Sequences , Triggers , Stored Procedure etc
+
+DROP Table table_name;
+DROP User user_name;
+DROP  View view_name;
+
+
+
+TRUNCATE: 
+==========
+It is used to delete or remove all the rows/records from table or views.
+
+TRUNCATE Table table_name;   // its auto-commit data can't be rollback or recover
+TRUNCATE View  view_name;
+
+
+delete customer; // delete all records
+rollback;  // but we can rollback or recover data in delete case
+
+
+RENAME:
+=======
+
+RENAME  Old_Table_Name  TO  New_table_name;
+
+
+
+
+
+
+
+ 
