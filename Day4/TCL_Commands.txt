@@ -1,0 +1,70 @@
+Transaction Control Language:
+-----------------------------
+TCL is used to control the transactions.
+COMMIT , SAVEPOINT , ROLLBACK
+
+Transaction
+
+
+
+conn system/admin
+
+INSERT...
+UPDATE ...
+DELETE...
+INSERT..
+
+commit; // transaction completed successfully  100%
+
+rollback;// transaction undo 0% 
+
+
+
+
+
+
+COMMIT: It will save the changes permanently related to DML queries.
+
+ROLLBACK: It will rollback/undo the changes till last commit point for DML Queries.
+
+SAVEPOINT: It is used as a bookmark to partially rollback , bookmark commit point.
+
+
+transaction begin;
+
+INSERT-1
+INSERT-2 
+INSERT-3
+INSERT-4
+
+SAVEPOINT S1;
+
+UPDATE-1
+UPDATE-2
+UPDATE-3
+
+SAVEPOINT S2;
+
+
+DELETE-1 
+DELETE-2 
+
+COMMIT to S1;
+ROLLBACK to s1;
+
+---------------------------------------------------------------------------
+
+DROP  TABLE EMP2;
+
+SQL> flashback  table system.employee3  to before drop;
+
+
+
+
+
+
+
+
+
+
+
