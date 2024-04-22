@@ -1,0 +1,94 @@
+DML:
+----
+Data Manipulation Language
+
+DML Commands are used to manipulate(insert,update,delete)  data to/from database tables.
+
+DML Commands are not auto-commit , it need to be comitted by user manually using commit command.
+
+DML Commands : INSERT , UPDATE , DELETE 
+
+INSERT: It is used to insert a new records into the table.
+
+UPDATE: It is used to update existing data  to the table.
+
+DELETE: It is used to delete existing data from the table.
+
+DML for Customer Table:
+
+ex: CREATE TABLE Customer(
+            Cid Number(3)  CONSTRAINT  Customer_Cid_PK  PRIMARY KEY ,
+	    CName Varchar(20) ,
+            Address  Varchar(20),
+            Email     varchar2(20)  CONSTRAINT Customer_Email_UNQ  UNIQUE 
+	);
+
+
+
+INSERT:
+
+SQL> INSERT INTO  Customer VALUES(504,'SCOTT','Banglore','scott@gmail.com',6789123456);
+
+1 row created.
+
+SQL> INSERT INTO Customer(cname,cid,email,contact)  values('FORD',505,'ford@gmail.com',9966553322);
+
+
+DYNAMIC INSERT QUERY:
+--------------------
+
+INSERT INTO CUSTOMER VALUES(&cid,'&cname','&address','&email',&phone);
+
+SQL> INSERT INTO CUSTOMER VALUES(&cid,'&cname','&address','&email',&phone);
+Enter value for cid: 506
+Enter value for cname: JERRY
+Enter value for address: Delhi
+Enter value for email: jerry@gmail.com
+Enter value for phone: 8877665544
+old   1: INSERT INTO CUSTOMER VALUES(&cid,'&cname','&address','&email',&phone)
+new   1: INSERT INTO CUSTOMER VALUES(506,'JERRY','Delhi','jerry@gmail.com',8877665544)
+
+1 row created.
+
+SQL> INSERT INTO CUSTOMER VALUES(&cid,'&cname','&address','&email',&phone);
+Enter value for cid: 507
+Enter value for cname: IMRAN
+Enter value for address: Mumbai
+Enter value for email: imran@gmail.com
+Enter value for phone: 6341270091
+old   1: INSERT INTO CUSTOMER VALUES(&cid,'&cname','&address','&email',&phone)
+new   1: INSERT INTO CUSTOMER VALUES(507,'IMRAN','Mumbai','imran@gmail.com',6341270091)
+
+1 row created.
+
+
+---------------------------------------------------------------
+
+UPDATE: 
+UPDATE Command is used to update data for a particular field or for whole column it depends on condition. It can update single row or entire table based on condition.
+
+
+SQL> UPDATE Customer  SET Address = 'Mumbai' Where   CID = '503';
+
+SQL> UPDATE Customer  SET Address = 'Banglore' Where Cid = (select cid from product where pname = 'Mac Book');
+
+
+--------------------------------------------
+
+DELETE :
+It is used to delete any number of records from Database.
+
+
+Ex:
+
+Delete from Product  where brand = 'Samsung';
+
+Delete from Product;
+
+
+
+
+
+
+
+
