@@ -1,0 +1,190 @@
+Meta Data:
+----------
+Oracle System defined tables are:
+
+Tab
+User_Tables
+User_Objects
+User_Constraints
+
+
+
+Objects in Oracle:
+-------------------
+User
+Table
+View
+Indexes
+Synonyms
+Sequence
+
+Procedure
+Functions
+Trigger
+Packages
+
+
+
+User:
+-----
+User Object in Oracle is created to manage database users by admin.
+
+CREATE USER  javeed  IDENTIFIED BY  tiger;
+
+
+
+
+DCL:
+Data Control Language:
+
+It is used to grant or revoke permissions to/from any users on any database objects.
+
+GRANT: It is used to grant permissions
+
+REVOKE: It is used to revoke permissions
+
+ex:
+
+GRANT  CONNECT , RESOURCE  TO javeed;
+REVOKE  CONNECT , RESOURCE FROM javeed;
+
+Granting permissions on Table from One user to another.
+
+Grant select,insert,update  ON Employee  to Javeed;
+
+ Revoke  insert,update  ON Employee  from Javeed;
+
+
+----------------------------------------------------------------------------
+Views:
+
+View is a Object which consist of select query but not data.
+View is an imaginary table. Duplicate copy of table.
+View consist of  any select query simple/complex queries.
+
+
+CREATE OR REPLACE View  Emp_Info   AS   SELECT * FROM EMPLOYEE; 
+
+Note: By default all DML and Select operation can be performed on above view which affects original table.
+
+CREATE View  Emp_Info   AS   SELECT * FROM EMPLOYEE with READ ONLY; 
+Note: Read Only option makes view read only permission where DML cannot be perform
+
+
+Indexes:
+--------
+• An index creates an entry for each value that appears in the indexed columns
+(by default, Oracle creates B-tree indexes).
+• The absence or presence of an Index does not require change in wording of any
+SQL statement.
+ An Index is merely a fast access path to the data.
+ An Index only affects the speed of execution.
+• There are different types of Indexes, which can be created by the user.
+• A “Table” can have any number of “Indexes”.
+• An Index can be on a single column or on multiple columns.
+ In Oracle, up to 32 columns can be included in one Index.
+• Updation of all Indexes is handled by RDBMS.
+• UNIQUE ensures that all rows in a Table are unique.
+• An Index is in an ascending order, by default.
+• The RDBMS decides when to use the Index while accessing the data.
+• Removal of an Index does not affect the Table on which it is based.
+• When you create a PRIMARY or a UNIQUE constraint on the “Table”, a
+UNIQUE index is automatically created.
+ The name of the constraint is used for the Index name.
+
+
+ex: CREATE INDEX  EMP_INDEX  ON EMPLOYE(SALARY);
+
+
+SQL> CREATE INDEX  EMP_INDEX2  ON EMPLOYEE(ENAME,JOB);
+
+Data dictionary for indexes:
+USER_INDEXES
+
+
+SELECT INDEX_NAME , INDEX_TYPE, TABLE_NAME , TABLE_OWNER  FROM USER_INDEXES                      WHERE  TABLE_NAME = 'EMPLOYEE';
+
+--------------------------------------------
+USER_IND_COLUMNS
+
+SQL> SELECT INDEX_NAME , TABLE_NAME , COLUMN_NAME  FROM USER_IND_COLUMNS WHERE TABLE_NAME = 'EMPLOYEE';
+
+SYNONYM:
+=========
+A Synonym simplifies access to objects. A Synonym is simply another name for
+an object.
+• With Synonyms, you can:
+ Ease referring to a table owned by another user.
+ Shorten lengthy object names.
+
+
+SQL> CREATE  PUBLIC/PRIVATE SYNONYM  E1  FOR Employee;
+
+SQL> DESC E1;
+
+SQL> SELECT * FROM E1;
+
+
+---------------------------------------------------------
+
+
+Sequence:
+==========
+• A Sequence:
+ automatically generates unique numbers.
+ is a “sharable object”.
+ is typically used to create a PRIMARY KEY value.
+ replaces application code.
+ speeds up the efficiency of accessing sequence values when cached in
+memory.
+
+
+
+EX:
+
+CREATE Sequence  my_seq
+INCREMENT BY 1   START WITH 1
+MAXVALUE 10   NOCYCLE
+
+
+my_seq.NEXTVAL  1
+my_seq.NEXTVAL  2
+my_seq.NEXTVAL  3
+
+
+my_seq.CURRVAL   3
+
+
+
+
+SQL> select  my_seq.NEXTVAL from dual;
+
+   NEXTVAL
+----------
+         1
+
+SQL> select  my_seq.CURRVAL  from dual;
+
+   CURRVAL
+----------
+         1
+
+SQL> select  my_seq.NEXTVAL from dual;
+
+   NEXTVAL
+----------
+         2
+
+
+eX:
+
+INSERT INTO CUSTOMER VALUES(my_seq.NEXTVAL , 'ANKIT','noida','ankit@gmail.com',9966338822);
+
+
+
+
+
+
+
+
+
