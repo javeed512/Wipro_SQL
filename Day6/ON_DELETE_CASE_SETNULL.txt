@@ -1,0 +1,71 @@
+
+PARENT CHILD RELATIONSHIP
+
+
+ON DELETE CASCADE  
+When ever parent record deleted all its mapping child records will be
+automatically deleted by server.
+
+ON DELETE SET NULL
+When ever parent record deleted all its mapping child records F.K will be
+auotmatically set as NULL value.
+
+parent
+=======
+
+
+SQL> CREATE TABLE category (
+  2    id INT,
+  3    category_name VARCHAR(50),
+  4    CONSTRAINT pk_category PRIMARY KEY (id)
+  5  );
+
+
+
+SQL> INSERT INTO category (id, category_name) VALUES (1, 'Electronics');
+
+1 row created.
+
+SQL> INSERT INTO category (id, category_name) VALUES (2, 'Furnitures');
+
+1 row created.
+
+
+
+
+
+
+
+child table
+===========
+
+
+
+CREATE TABLE products_info (
+  id INT,
+  category_id INT,
+  product_name VARCHAR(50),
+  CONSTRAINT pk_product PRIMARY KEY (id),
+  CONSTRAINT fk_prod_category
+    FOREIGN KEY (category_id) REFERENCES category(id)
+    ON DELETE  CASCADE/SET NULL
+);
+
+INSERT INTO products_info (id, category_id, product_name) VALUES
+(1, 2, 'Desk Chair');
+
+INSERT INTO products_info (id, category_id, product_name) VALUES
+(2, 2, 'Couch');
+
+INSERT INTO products_info (id, category_id, product_name) VALUES
+(3, 1, 'TV');
+
+
+
+
+
+
+
+
+
+
