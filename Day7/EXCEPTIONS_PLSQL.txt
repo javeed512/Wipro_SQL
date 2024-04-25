@@ -1,0 +1,129 @@
+
+*EXCEPTIONS:
+Runtime Errors are called as Exceptions. They are three types of Exceptions.
+1.	ORACLE Predefined Exception
+2.	ORACLE Non Predefined Exception
+3.	USER Defined Exception
+
+*Oracle Predefined Exception:
+These Exceptions will have Exception name and Exception number. Examples of predefined Exceptions are:
+1.	NO_DATA_FOUND
+2.	TOO_MANY_ROWS
+3.	ZERO_DIVIDE
+4.	VALUE_ERROR
+5.	DUP_VAL_ON_INDEX
+
+
+Ex:  NO_DATA_FOUND
+
+DECLARE
+
+EMP_RECORD   Employee%ROWTYPE;
+
+BEGIN
+
+SELECT * INTO  EMP_RECORD  FROM Employee where eid = &eid;
+
+DBMS_OUTPUT.PUT_LINE(EMP_RECORD.eid  ||'  '|| EMP_RECORD.ename  ||'  '|| EMP_RECORD.job  ||'  '|| EMP_RECORD.salary);
+
+EXCEPTION
+WHEN  NO_DATA_FOUND  THEN
+
+DBMS_OUTPUT.PUT_LINE('SORRY INVALID EID , DATA NOT FOUND');
+
+
+DBMS_OUTPUT.PUT_LINE('THANK YOU');
+
+END;
+
+
+
+
+TOO_MANY_ROWS Exception:
+========================
+
+DECLARE 
+v_salary   EMPLOYEE.SALARY%TYPE;
+
+BEGIN
+
+SELECT SALARY INTO  v_salary from Employee where dno = 10;
+
+DBMS_OUTPUT.PUT_LINE('salary '|| v_salary);
+
+EXCEPTION
+
+WHEN  TOO_MANY_ROWS  THEN
+
+DBMS_OUTPUT.PUT_LINE('More than one record is return by select');
+
+END;
+
+
+ZERO_DIVIDE  Exception:
+-----------------------
+
+Declare
+	A Number;
+	Begin
+	A := 5/0;
+	Exception
+	when ZERO_DIVIDE then
+	DBMS_OUTPUT.PUT_LINE( 'DO NOT DIVIDE BY 0' );
+END;
+/
+
+
+
+VALUE_ERROR:
+=============
+DECLARE
+
+v_salary  NUMBER(7,2);
+
+begin
+
+	select ename  INTO v_salary  FROM EMPLOYEE WHERE EID =101;
+	
+
+	DBMS_OUTPUT.PUT_LINE('ENAME IS  '||v_salary);  /* value error here */
+
+EXCEPTION 
+when  VALUE_ERROR  then
+DBMS_OUTPUT.PUT_LINE('Please check datatype for the local variable');
+end;
+
+
+
+DUP_VAL_ON_INDEX :
+-----------------
+declare
+A  NUMBER := 100;
+
+begin
+
+  INSERT INTO Employee(eid,ename,salary,job)  values(113,'JACK',13000,'office clerk');
+  DBMS_OUTPUT.PUT_LINE('INSERT SUCCESS');
+
+ A := A/10;
+ DBMS_OUTPUT.PUT_LINE('A value is '|| A);
+
+SELECT  ENAME INTO A  from Employee where eid =101;
+
+EXCEPTION
+WHEN   DUP_VAL_ON_INDEX  THEN
+DBMS_OUTPUT.PUT_LINE('DUPLICATE ENTRY FOR P.K ');
+WHEN  ZERO_DIVIDE THEN
+DBMS_OUTPUT.PUT_LINE('SORRY CANNOT DIVIDE NUM BY ZERO');
+WHEN OTHERS  THEN
+DBMS_OUTPUT.PUT_LINE('SOME ERROR OCCUR');
+DBMS_OUTPUT.PUT_LINE(SQLCODE);
+DBMS_OUTPUT.PUT_LINE(SQLERRM);
+
+
+end;
+
+
+
+
+

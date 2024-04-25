@@ -1,0 +1,349 @@
+PL/SQL:
+Procedural Language for SQL.
+It will perform Data Manipulation using SQL and Data Processing using PL/SQL.
+
+PLSQL is created to introduce basic programming concepts in SQL like variable,blocks , functions , procedures , if-else , loops  , exception handling etc
+
+
+PL/SQL Structure:
+
+//ANONYMOUS BLOCK
+
+DECLARE       (optional)
+// declare variables,constants , cursors , types
+
+BEGIN         (mandatory)
+
+// SQL and PLSQL statements/code
+
+
+ EXCEPTION  (optional)	
+	// handle runtime exceptions or erros
+
+
+END;
+
+
+
+
+
+
+
+Named blocks:
+
+CREATE Function/Procedure/Trigger/Package   MYFUNC
+
+
+IS     (optional)
+// declare variables,constants , cursors , types
+
+BEGIN         (mandatory)
+
+// SQL and PLSQL statements/code
+
+
+ EXCEPTION  (optional)	
+	// handle runtime exceptions or erros
+
+
+END;
+
+
+
+Example:
+
+CREATE Procedur  my_pro
+IS 
+N1  NUMBER;
+
+BEGIN 
+
+ // dml or select
+
+
+	begin
+
+		exception
+
+	end;
+
+
+END;
+
+
+
+
+Examples:
+
+Anonymous block or unnamed block.
+
+
+DECLARE
+
+V_ENAME  Varchar2(20 );
+V_SALARY NUMBER(7,2);
+
+BEGIN
+ 
+
+SELECT ENAME , SALARY  INTO V_ENAME,V_SALARY FROM EMPLOYEE WHERE EID = 101;
+
+DBMS_OUTPUT.PUT_LINE('ENAME IS '||  V_ENAME);
+DBMS_OUTPUT.PUT_LINE('SALARY IS '|| V_SALARY);
+
+END;
+
+
+Note: We need to set serveroutput ON everytime we connect to sql.
+SQL>   SET SERVEROUTPUT ON;
+
+
+
+*Write PL/SQL block which will calculate some of two numbers and display the output?
+
+DECLARE
+A number(4) := 0;    /* Here A initial value is zero  */
+B number(4) := 0;     -- Here B value is initially zero
+C number(5);
+BEGIN
+A := 100;
+B := 200;
+C := A + B;
+
+DBMS_OUTPUT.PUT_LINE( 'sum of two numbers ' || C);
+END;
+/
+
+
+
+/* PLSQL Block passing values at runtime using & operator. */
+
+DECLARE
+A number(4) := 0;    /* Here A initial value is zero  */
+B number(4) := 0;     -- Here B value is initially zero
+C number(5);
+BEGIN
+A := &A;
+B := &B;
+C := A + B;
+
+DBMS_OUTPUT.PUT_LINE( 'sum of two numbers ' || C);
+END;
+/
+
+
+
+
+
+
+
+*Write a PL/SQL block which accepts employee number and increment employee salary by 1000?
+
+
+DECLARE 
+
+ENO  NUMBER(3);
+
+BEGIN
+
+ENO := &EmpNum;
+
+
+UPDATE Employee SET Salary = Salary + 1000 where eid = eno;
+
+DBMS_OUTPUT.PUT_LINE('Record updated successfully');
+
+
+END;
+
+
+*Write a PL/SQL block which empno and delete that row from the emp table?
+ 
+DECLARE
+A number(4);
+BEGIN
+A := &Empno;
+Delete from emp where Empno = A;
+END;
+/
+
+Control Statment using IF THEN ELSE
+
+
+DECLARE 
+A NUMBER(5);
+
+BEGIN
+
+A := &A;
+
+IF A > 0 THEN
+
+DBMS_OUTPUT.PUT_LINE('NUMBER IS POSITIVE');
+
+ELSE 
+
+DBMS_OUTPUT.PUT_LINE('NUMBER IS NEGATIVE');
+
+END IF;
+
+END;
+
+
+
+Loops in PLSQL:
+1. Loop
+2. While loop
+3. For loop
+
+Simple Loop:
+
+
+DECLARE
+
+A  number(3) := 1;
+
+BEGIN
+
+DBMS_OUTPUT.PUT_LINE('WELCOME TO SIMPLE LOOP');
+
+LOOP
+DBMS_OUTPUT.PUT_LINE('HELLO '|| A);
+
+EXIT  WHEN  A = 5;
+A :=  A + 1;
+
+END LOOP;
+
+DBMS_OUTPUT.PUT_LINE('THANK YOU');
+
+END;
+
+
+
+WHILE LOOP:
+==========
+
+DECLARE  
+A NUMBER(4) := 1;
+BEGIN
+
+DBMS_OUTPUT.PUT_LINE('WELCOME TO WHILE LOOP');
+
+WHILE  A <= 5 LOOP
+
+DBMS_OUTPUT.PUT_LINE('HELLO '||A);
+
+A := A+1;
+
+END LOOP;
+
+DBMS_OUTPUT.PUT_LINE('THANK YOU');
+
+END;
+
+
+
+FOR LOOP:
+===========
+
+DECLARE 
+A  NUMBER;
+
+BEGIN 
+
+DBMS_OUTPUT.PUT_LINE('WELCOME TO  FOR LOOP');
+
+FOR  A  IN  1 .. 15   LOOP
+
+DBMS_OUTPUT.PUT_LINE('HELLO ' || A);
+
+END LOOP;
+
+DBMS_OUTPUT.PUT_LINE('THANK YOU');
+
+END;
+
+
+
+* WRITE PLSQ Statement to select employee values base on eid.
+
+declare
+
+v_ename    varchar2(20);    
+v_salary number(7,2);
+v_job   varchar2(20);
+
+begin
+
+select  ename , salary , job  INTO v_ename, v_salary , v_job from Employee where eid = &eid;
+DBMS_OUTPUT.PUT_LINE(v_ename ||' '|| v_salary ||' '||  v_job);
+
+end;
+
+--------------------------
+
+%TYPE :
+========
+ it is used to refer table column data types for variable declaration in plsql
+
+v_ename  varchar(20);  // example-1
+
+v_ename  employee.ename%type;  // example-2
+
+syn : tablename.column_name%TYPE;
+
+
+
+* WRITE PLSQ Statement to select employee values base on eid using %TYPE attribute for variable decalartions.
+
+declare
+
+v_ename   employee.ename%type;
+v_salary  employee.salary%type;
+v_job      employee.job%type;
+
+A   employee.eid%type;
+
+begin
+
+select  ename , salary , job  INTO v_ename, v_salary , v_job from Employee where eid = &eid;
+DBMS_OUTPUT.PUT_LINE(v_ename ||' '|| v_salary ||' '||  v_job);
+
+end;
+
+
+%ROWTYPE:
+===========
+It is used to declare a variale whose type is same as Table Row type. It is useful for fetching all columns at same time using * in select.
+
+EX:
+
+DECLARE
+
+EMP_RECORD   Employee%ROWTYPE;
+
+BEGIN
+
+SELECT * INTO  EMP_RECORD  FROM Employee where eid = &eid;
+
+DBMS_OUTPUT.PUT_LINE(EMP_RECORD.eid  ||'  '|| EMP_RECORD.ename  ||'  '|| EMP_RECORD.job  ||'  '|| EMP_RECORD.salary);
+
+END;
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
