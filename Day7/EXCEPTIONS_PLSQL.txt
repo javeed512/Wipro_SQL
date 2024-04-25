@@ -119,11 +119,145 @@ WHEN OTHERS  THEN
 DBMS_OUTPUT.PUT_LINE('SOME ERROR OCCUR');
 DBMS_OUTPUT.PUT_LINE(SQLCODE);
 DBMS_OUTPUT.PUT_LINE(SQLERRM);
-
-
 end;
 
 
+----------------------
+
+NESTED BLOCK
+============
+DECLARE  
+
+A NUMBER :=100;
+
+BEGIN	
+
+	DBMS_OUTPUT.PUT_LINE('WELCOME TO OUTER BLOCK/MAIN BLOCK ');
+	DBMS_OUTPUT.PUT_LINE('VALUE OF A ' || A);
+
+	   DECLARE
+	   B NUMBER := 99;
+	
+           BEGIN
+		DBMS_OUTPUT.PUT_LINE('WELCOME TO INNER BLOCK');	
+		DBMS_OUTPUT.PUT_LINE('VALUE OF A in INNER BLOCK ' || A);		
+		DBMS_OUTPUT.PUT_LINE('VALUE OF B ' || B);
+	    END;
+
+	--DBMS_OUTPUT.PUT_LINE('VALUE OF B IN OUTER BLOCK' || B);
+
+	DBMS_OUTPUT.PUT_LINE('END OF OUTER BLOCK');
+
+	
+
+
+END;
 
 
 
+----------------------------------------
+EXCEPTION PROPAGATION / throwing exception
+
+DECLARE 
+v_sal  number;
+
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('OUTER BLOCK');
+
+
+	BEGIN
+	DBMS_OUTPUT.PUT_LINE('INNER BLOCK');
+	SELECT salary INTO v_sal from Employee where eid = 121;  
+	
+
+ 		-- option 1 we can handle Exception here
+	END;
+
+		--options 2 we can also handle Exception here
+
+	EXCEPTION
+	WHEN NO_DATA_FOUND THEN
+	DBMS_OUTPUT.PUT_LINE('SORRY DATA NOT FOUND EXP');
+
+
+	DBMS_OUTPUT.PUT_LINE('OUTER BLOCK ENDS');
+
+END;
+
+
+
+Non-Predefined Exception:
+-------------------------
+DECLARE
+
+MYEXP  EXCEPTION;  -- STEP1
+PRAGMA EXCEPTION_INIT(MYEXP, -2292);      --STEP2
+
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('WELCOME TO NON-PREDEFINED EXCEPTION');
+	
+	DELETE FROM DEPT WHERE DNO =10;
+
+
+EXCEPTION
+WHEN  MYEXP THEN
+
+DBMS_OUTPUT.PUT_LINE('SORRY CANT DELETE RECORD FROM PARENT TABLE');
+DBMS_OUTPUT.PUT_LINE(SQLERRM);
+END;
+
+
+
+
+
+
+---------------------------------------------------
+USER DEFINED EXCEPTION
+=======================:
+DECLARE  
+v_comm  EMPLOYEE.COMM%TYPE;
+
+NO_COMM_EXP  EXCEPTION;  --step1  declare custom exp
+
+BEGIN
+
+	SELECT COMM into v_comm from Employee where eid = &eid;
+	
+	IF  v_comm  IS NULL   THEN
+	
+		RAISE  NO_COMM_EXP;  -- step2  raise custom exp
+	END IF;
+
+
+
+EXCEPTION
+
+WHEN   NO_COMM_EXP THEN                -- handle exp
+
+DBMS_OUTPUT.PUT_LINE('SORRY YOU DONT HAVE ANY COMMISSION');
+
+END;
+
+
+----------------------------
+RAISE_APPLICATION_ERROR(ERRCODE,ERRMSG)
+
+
+DECLARE 
+v_comm   EMPLOYEE.COMM%TYPE;
+
+
+BEGIN 
+
+	SELECT COMM into v_comm from Employee where eid = &eid;
+
+   IF   v_comm IS NULL THEN
+		
+	RAISE_APPLICATION_ERROR(-20786,'COMM IS NULL');
+
+    END IF;
+
+	DBMS_OUTPUT.PUT_LINE('COMM IS GIVEN TO THIS EMPLOYEE');
+END;
