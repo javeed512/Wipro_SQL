@@ -1,0 +1,262 @@
+Stored Procedures:
+-------------------
+
+1. Procedure
+2. Function 
+
+3. Triggers
+4. Package
+
+
+Procedure:
+----------
+It is  PL/SQL  named block which compiles and stored  permanently in database like other object for repeated execution / reusability purpose.
+
+Example:
+
+CREATE  Procedure  mypro
+IS 
+v_ename Employee.ename%type;
+v_salary number;
+
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('welcome to Stored Procedure');
+
+	SELECT  ename,salary INTO  v_ename , v_salary from Employee where eid = &eid;
+
+	DBMS_OUTPUT.PUT_LINE(v_ename ||' '|| v_salary);
+
+	dbms_output.put_line('THANK YOU');
+
+END;
+ 
+
+/
+
+Note: Stored procedures will get compiled and stored in database , we need to call them using execute command to see output.
+
+SQL>  execute mypro;             // IT WILL execute procedure and show output
+
+
+
+
+
+Parameters in Stored Procedures:
+1. IN  -- It will accept the input values from user
+2. OUT  -- It will store value and gives output
+3. IN OUT  -- It is 2 in 1 , it can accept input value as well as store output values to              display.
+
+
+Ex: IN parameters
+
+
+CREATE OR REPLACE Procedure  Emp_Pro(empno  IN NUMBER )
+IS
+v_ename  varchar2(20);
+v_job    varchar2(20);
+
+BEGIN
+
+SELECT  ename , job INTO v_ename , v_job from Employee where eid = empno;
+
+DBMS_OUTPUT.PUT_LINE(v_ename || ' '|| v_job);
+
+END;
+
+
+Ex: OUT Parameter
+
+CREATE OR REPLACE Procedure  Emp_Pro2(empno  IN NUMBER , result  OUT  NUMBER )
+IS
+v_ename  varchar2(20);
+v_job    varchar2(20);
+v_sal     NUMBER(7,2);
+
+BEGIN
+
+SELECT  ename , job  , salary  INTO v_ename , v_job, v_sal  from Employee where eid = empno;
+
+result  :=  v_sal;
+
+DBMS_OUTPUT.PUT_LINE(v_ename || ' '|| v_job);
+
+END;
+
+
+
+SQL> desc emp_pro2;
+PROCEDURE emp_pro2
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ EMPNO                          NUMBER                  IN
+ RESULT                         NUMBER                  OUT
+
+
+Steps to execute emp_pro2 using OUT parameter. 
+Note: To get value of any OUT parameter we need to create bind variable like below
+SQL> VARIABLE  N1 NUMBER;    // N1 is a bind variable or global var
+SQL> execute  emp_pro2(101,:N1);
+King PRESIDENT
+
+PL/SQL procedure successfully completed.
+
+SQL> PRINT N1;
+
+        N1
+----------
+     50000
+
+
+INOUT Parameter:
+----------------
+CREATE OR REPLACE Procedure  Dept_Pro(P1  IN OUT  Varchar)
+IS
+v_dname varchar2(20);
+
+BEGIN
+
+SELECT  dname INTO  v_dname from Dept where location = 'Hyderabad';
+
+ DBMS_OUTPUT.PUT_LINE('Dept Name '|| v_dname);
+
+	P1 := v_dname;
+
+END;
+
+
+
+SQL> VARIABLE   V1  Varchar2(20);
+SQL> execute  dept_pro(:V1);
+Dept Name Research
+
+PL/SQL procedure successfully completed.
+
+SQL> print V1;
+
+V1
+----------
+Research
+
+
+===================================================
+
+Create OR Replace procedure find_square(A IN OUT number)
+	IS
+	Begin
+	A := A * A;
+	END;
+
+SQL> VARIABLE X NUMBER;  // create bind variable
+
+SQL> BEGIN     :X := 5 ;   END;     // initialize bind variable initial value as 5
+       /
+
+PL/SQL procedure successfully completed.
+
+SQL> PRINT X;
+
+         X
+----------
+         5
+
+SQL> execute  find_square(:X);
+
+PL/SQL procedure successfully completed.
+
+SQL> print X;
+
+         X
+----------
+        25
+
+==================================================
+
+
+Functions:
+They are stored procedures which should and must return value.
+
+Functions are same as Procedures except function returns vlaue where as Procedure does not.
+
+Example1:
+
+CREATE OR REPLACE Function  myfunc(empno  IN NUMBER , result OUT Varchar)
+return  NUMBER 
+IS
+v_salary NUMBER(7,2);
+v_ename  VARCHAR2(20);
+
+BEGIN
+
+select   ename , salary  INTO v_ename , v_salary from Employee where eid =  empno;
+
+result :=  v_ename;
+
+	dbms_output.put_line('function executed..');
+
+return v_salary;
+
+END;
+
+
+
+
+Note: To execute above function which contain OUT Parameter we should use Anonymous block as below to get function return value as well as OUT parameter value.
+
+
+Running Example1:
+
+// anonymous block to execute function
+SQL> DECLARE
+  2  N NUMBER;
+  3  BEGIN
+  4    N := myfunc(101,:R1);
+  5  dbms_output.put_line(N);
+  6  END;
+  7  /
+function executed..
+50000
+
+PL/SQL procedure successfully completed.
+
+SQL> PRINT R1;
+
+R1
+--------
+King
+
+-----------------------------------------------
+ Example2:
+
+Create or Replace function ADD_NUM_FUN(A number, B number)
+Return number
+IS
+C number;
+Begin
+C := A + B;
+Return C;
+END;
+  /
+
+
+Note: Above function can be executed by using anonymous block or select command
+option-1
+--------
+
+DECLARE
+N1 NUMBER;
+BEGIN
+ N1 := ADD_NUM_FUN(5,10);
+ DBMS_OUTPUT.PUT_LINE('RESULT IS '|| N1);
+END;
+
+option-2
+---------
+SQL> SELECT  ADD_NUM_FUN(10,20) AS RESULT  FROM DUAL;
+
+    RESULT
+----------
+        30
+
+
+
+
