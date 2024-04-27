@@ -41,3 +41,90 @@ P1 Procedure created inside package
 
 PL/SQL procedure successfully completed.
 
+
+---------------------------------------------------------------
+
+
+Specification:
+---------------
+
+CREATE OR REPLACE  Package  Emp_Package
+IS
+PROCEDURE  E_Pro(eno IN  Number);
+FUNCTION   E_Func(eno IN Number)
+return  Number;
+end Emp_Package;
+
+
+
+
+CREATE OR REPLACE  Package  Body  Emp_Package
+IS
+PROCEDURE  E_Pro(eno IN  Number)
+IS 
+v_ename  Employee.ename%type;
+BEGIN 
+ SELECT  ename INTO  v_ename FROM Employee where eid = eno;
+	DBMS_OUTPUT.PUT_LINE('E_Pro ename is '|| v_ename);
+END  E_Pro;	
+
+
+
+FUNCTION   E_Func(eno IN Number)
+return  Number
+IS
+v_salary  Employee.salary%type;
+BEGIN
+SELECT  salary INTO v_salary from Employee where eid = eno;
+	DBMS_OUTPUT.PUT_LINE('E_Func executed..');
+return v_salary;
+
+END E_Func;
+
+
+end Emp_Package;
+
+
+Execution of Procedure:
+-----------------------
+SQL> execute  Emp_Package.E_Pro(101);
+E_Pro ename is King
+
+Execution of Procedure in Anonymous block:
+------------------------------------------
+BEGIN
+  Emp_Package.E_Pro(103);
+END;
+
+
+
+Exeution of Function  using Select command:
+---------------------------------------------
+
+SQL> select  Emp_Package.E_Func(101) from DUAL;
+
+EMP_PACKAGE.E_FUNC(101)
+-----------------------
+                  50000
+
+E_Func executed..
+
+
+
+
+Execution of Function using Anonymous Block:
+---------------------------------------------
+SQL> DECLARE
+  2  N1  NUMBER;
+  3  BEGIN
+  4     N1 :=  Emp_Package.E_Func(102);
+  5
+  6  DBMS_OUTPUT.PUT_LINE(N1);
+  7
+  8  END;
+  9  /
+E_Func executed..
+35000
+
+
+
