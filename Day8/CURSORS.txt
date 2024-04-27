@@ -1,0 +1,275 @@
+*CURSORS: CURSOR is a memory location which is used to run SQL commands. They are two types of cursors.
+	1. Implicit cursor
+	2. Explicit cursor
+
+*Implicit cursor: All the activities related to cursors like opening the cursor, processing the cursor and closing the cursor are done automatically. Hence these cursor are called as implicit cursor.
+
+*Implicit cursor attributes: They are 4 implicit cursor attributes.
+
+1.	SQL%ISOPEN
+2.	SQL%FOUND
+3.	SQL%NOTFOUND
+4.	SQL%ROWCOUNT
+
+
+Ex: 
+
+
+SQL%FOUND
+---------
+BEGIN
+
+  Update Employee  SET  Salary = 70000 WHERE eid = 109;
+
+  IF  SQL%FOUND  THEN
+  DBMS_OUTPUT.PUT_LINE('RECORD UPDATED SUCCESSFULLY');
+ ELSE
+    DBMS_OUTPUT.PUT_LINE('UPDATE FAILED');
+ END IF;
+
+END;
+
+
+SQL%ROWCOUNT
+-------------
+
+BEGIN
+
+	UPDATE Employee SET Salary = 55000  where dno = 20;
+
+	DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT ||' ROWS Effected');
+
+END;	
+
+
+SQL%ISOPEN
+------------
+BEGIN
+
+  Update Employee  SET  Salary = 80000 WHERE eid = 109;
+
+  IF  SQL%ISOPEN THEN
+  DBMS_OUTPUT.PUT_LINE('CURSOR IS OPEN');
+ ELSE
+    DBMS_OUTPUT.PUT_LINE('CURSOR IS CLOSED');
+ END IF;
+
+END;
+
+
+
+
+Ex:
+
+DECLARE
+
+v_ename   Employee.EName%type;
+
+BEGIN
+
+	select  ename INTO v_ename from Employee  where dno = 10;
+
+ 
+	DBMS_OUTPUT.PUT_LINE(v_ename);
+
+END;
+
+NOTE : Above program throws Error because select statement returns multiple records/rows which cannot be handle by single variable v_ename. Here explicit cursors required.
+
+
+**EXPLICIT CURSORS:
+=====================
+ All the activities related to cursor like.
+1.	Opening the cursor
+2.	Processing the cursor 
+3.	Closing the cursor
+
+Act should be done by the developer. Hence this cursor is called explicit cursors.
+We should use explicit cursors to run a select statement. Which returns more than one rows?
+Steps to use explicit cursors:
+Step 1: declare the cursor
+Step 2: open the cursor
+Step 3: fetch data from cursor to local variables
+Step 4: close the cursor
+
+Syntax: 
+Step 1: declare the cursor
+	CURSOR <CURSOR_NAME> IS <SELECT STMT>;
+Step 2: open the cursor
+	OPEN <CURSOR_NAME>;
+
+Step 3: fetch data from cursor to local variables
+	FETCH <CURSOR_NAME> INTO <VAR1>,<VAR2>,….,….,….<VARn>;
+
+Step 4: close the cursor
+	CLOSE <CURSOR_NAME>;
+
+
+
+DECLARE 
+
+CURSOR  C1  IS  Select Ename from Employee;
+v_ename   Employee.ename%type;
+
+BEGIN
+
+ OPEN C1;
+ 
+ LOOP 
+ FETCH  C1  into v_ename;
+	
+ EXIT WHEN  C1%NOTFOUND;
+
+	DBMS_OUTPUT.PUT_LINE(v_ename);	
+ 
+ END LOOP;
+
+ CLOSE C1;
+
+END;
+
+
+------------------------
+
+EX:
+
+
+
+
+
+CREATE OR REPLACE  PROCEDURE  EMP_PRO_CURSOR
+
+IS
+
+CURSOR  C1  IS  Select Ename , Job , Salary from Employee;   
+v_ename   Employee.ename%type;
+v_job      Employee.job%type;
+v_salary   NUMBER(7,2);
+
+BEGIN
+
+ OPEN C1;
+ 
+ LOOP 
+ FETCH  C1  into v_ename , v_job , v_salary;
+	
+ EXIT WHEN  C1%NOTFOUND;
+
+	DBMS_OUTPUT.PUT_LINE(v_ename || '  '|| v_job ||' '|| v_salary);	
+ 
+ END LOOP;
+
+ CLOSE C1;
+
+END;
+
+
+
+
+-------------------------------------------------------
+
+CURSOR with FOR Loop:
+=====================
+DECLARE  
+
+CURSOR  C1 IS SELECT  ename , job , salary from Employee;
+
+BEGIN
+
+FOR  E  IN  C1  LOOP
+DBMS_OUTPUT.PUT_LINE(E.ename || ' '|| E.job ||' '|| E.salary);
+
+END LOOP;
+
+END;
+
+
+----------------------------------
+
+
+Using %ISOPEN:
+==============
+
+DECLARE 
+
+CURSOR  C1  IS  Select Ename from Employee;
+v_ename   Employee.ename%type;
+
+BEGIN
+
+ OPEN C1;
+
+IF  C1%ISOPEN THEN
+
+DBMS_OUTPUT.PUT_LINE('CURSOR IS OPEN ');
+
+ELSE  
+DBMS_OUTPUT.PUT_LINE('CURSOR IS CLOSED');
+
+END IF;
+
+END;
+
+
+------------------------------------------------------
+DECLARE 
+
+CURSOR  C1  IS  Select Ename from Employee;
+v_ename   Employee.ename%type;
+
+BEGIN
+
+ OPEN C1;
+ 
+ LOOP 
+ FETCH  C1  into v_ename;
+	
+ EXIT WHEN  C1%ROWCOUNT = 5;
+
+	DBMS_OUTPUT.PUT_LINE(v_ename);	
+ 
+ END LOOP;
+
+ CLOSE C1;
+
+END;
+
+
+
+------------------------------------------------------------
+
+
+*Parameterized cursor: 
+=======================
+A cursor which accepts a parameter from the user is called as parameterized cursor. Active dataset changes dynamically basing on the value passed to the cursor.
+Ex:
+
+DECLARE
+
+CURSOR  C1(N1 NUMBER) IS SELECT    ENAME , SALARY FROM EMPLOYEE WHERE DNO = N1;
+
+v_ename  varchar2(20);
+v_salary  number(7,2);
+
+BEGIN
+
+OPEN C1(&dno);
+
+LOOP FETCH  C1  into  v_ename, v_salary ;
+EXIT WHEN  C1%NOTFOUND ;
+
+DBMS_OUTPUT.PUT_LINE(v_ename || '  '|| v_salary);
+
+
+END LOOP;
+
+CLOSE C1;
+
+END;
+
+
+
+
+
+
+
