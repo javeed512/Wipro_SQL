@@ -1,0 +1,43 @@
+*Packages:
+A package is collection of logically related sub programs.
+Creation of package invokes two steps.
+Step 1: creating package specification.
+Step 2: creating package body.
+
+Package specification: package specification contains declaration of sub programs.
+Package body: package body contains definition of sub programs.
+
+Example of Packages:
+
+step1: package specification
+----------------------------
+
+CREATE OR REPLACE  Package   my_package
+IS
+Procedure  p1;
+
+end  my_package;
+
+step2: package body
+-------------------
+
+CREATE OR REPLACE   Package Body  my_package 
+IS
+Procedure p1
+IS
+Begin
+
+DBMS_OUTPUT.PUT_LINE('P1 Procedure created inside package');
+
+end p1;
+
+end  my_package;
+
+SQL> desc my_package;
+PROCEDURE P1
+
+SQL> execute  my_package.p1;
+P1 Procedure created inside package
+
+PL/SQL procedure successfully completed.
+
