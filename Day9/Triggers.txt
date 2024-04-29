@@ -1,0 +1,143 @@
+
+***Triggers:
+A Trigger is a PL/SQL block which is executed automatically basing on an event.
+Triggering events are inserted, update, delete.
+Trigger timing can be before, after, instead of 
+Syntax:
+Create or replace trigger <TRIGGER_NAME><TIMMING><EVENT> ON <OBJECT_NAME>
+Begin
+----------- 
+-----------
+----------- 
+END;
+  /
+
+
+Scenario:
+Suppose we have Employee table , this table is access by many users now there is chance that users may perform some DML operations like delete records , update records etc.
+
+Create Trigger on Employee Timings before DML :
+Delete from Employee where eid = 101;  ----> Trigger will execute here
+
+Alert / Notification to owner that Employee table record is getting deleted.
+
+Rollback;
+
+
+Example1: 
+
+
+CREATE OR REPLACE Trigger  Dept_Trigger
+Before  INSERT  ON Dept
+Begin
+DBMS_OUTPUT.PUT_LINE('INSERT Operation is getting perform on Dept table');
+End;
+
+
+
+CREATE OR REPLACE   Trigger   Trg1
+After INSERT or  UPDATE or  DELETE ON Dept FOR EACH ROW
+Begin
+
+IF  Inserting  THEN
+
+DBMS_OUTPUT.PUT_LINE('Thank you for Inserting record');
+
+ELSIF Updating THEN
+DBMS_OUTPUT.PUT_LINE('Thank you for Updating record');
+
+ELSE 
+
+DBMS_OUTPUT.PUT_LINE('Thank you for Deleting record');
+
+End IF;
+
+End;
+
+
+
+--------------------------------------------------------------------
+
+
+
+To see all Triggers Details:
+
+SELECT * FROM  USER_OBJECTS;
+
+
+SELECT * FROM  USER_TRIGGERS;
+
+
+---------------------------------------------------
+
+*Using: new qualifier:
+*Create a trigger which will allow insert command only when salary is less than 5000. Trigger should reject the insert command by providing a meaningful message. If SAL > 5000?
+
+CREATE OR REPLACE  Trigger  Emp_Trg 
+After  INSERT  ON Employee  FOR EACH ROW 
+Begin
+
+IF  :new.salary > 5000  THEN
+
+RAISE_APPLICATION_ERROR(-20199 , 'Salary should be less than 5000');
+
+END IF;
+
+END;
+
+---------------------------------
+
+SQL> insert into Employee(eid,ename,salary,job)  values(121,'Ankit',12000,'Developer');
+insert into Employee(eid,ename,salary,job)  values(121,'Ankit',12000,'Developer')
+            *
+ERROR at line 1:
+ORA-20199: Salary should be less than 5000
+ORA-06512: at "SYSTEM.EMP_TRG", line 5
+ORA-04088: error during execution of trigger 'SYSTEM.EMP_TRG'
+=======================================================================================
+
+
+*Using :old qualifier:
+*A trigger should restrict delete operation on president?
+
+CREATE OR REPLACE  TRIGGER   Emp_Trg2
+AFTER  DELETE ON  Employee FOR EACH ROW
+
+Begin
+
+IF  :old.Job = 'PRESIDENT' THEN
+
+RAISE_APPLICATION_ERROR(-20175 , 'Sorry President cannot be deleted');
+
+END IF;
+
+END;
+
+
+----------------------------------------------------------------------------
+
+
+Create View for Trigger:
+-----------------------
+CREATE View   Emp_Dept_View  AS 
+SELECT    E.Eid,E.Ename,E.salary , D.dno , D.dname, D.location from Employee E , Dept D  where E.dno = D.dno;
+
+
+
+*Instead of trigger example:
+=============================
+
+CREATE OR REPLACE  Trigger View_Trg  
+INSTEAD OF   INSERT  ON  Emp_Dept_View  FOR EACH ROW
+  
+Begin
+
+INSERT INTO  Dept  values(:new.dno , :new.dname , :new.location);
+INSERT INTO Employee(eid,ename,salary) values(:new.eid, :new.ename , :new.salary);
+  
+
+End;
+
+
+
+
