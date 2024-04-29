@@ -1,0 +1,46 @@
+For Employee table:
+
+
+
+
+1. Write Procedure to pass Eid , and display employee and dept details in below format:
+
+
+Employee ID : 101 
+Employee Name :  king
+Employee Salary : 50000
+Dept No :   10
+Dept Name : Development
+Location :  Hyderabad
+
+
+
+2. Create Procedure  which accept dynamic data (from Keyboard)  for Dept table to insert new records
+
+
+
+3. Create function with input parameters  to update record in dept table.
+IF record does not exist then insert new record
+ELSE update record
+
+Hint:
+update_dept(10,'Sales','Pune');
+
+
+IF  deptno = 10  then
+ upddate
+
+
+
+
+4. Now , create a package specification and body to  store above 3 programs in single package
+
+
+
+
+
+
+
+
+
+

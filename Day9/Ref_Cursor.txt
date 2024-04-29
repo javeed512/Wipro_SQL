@@ -1,0 +1,108 @@
+*REF CURSOR:
+A ref cursor is basically a data type.
+A variable created based on such a data type is generally called a cursor variable.
+A ref cursor can be associated with more than one select statement at run time. Before associating a new select statement. we need to close the cursor.
+
+
+syn:   
+   Type  r_cursor  IS  REF CURSOR;
+
+   emp_cursor  r_cursor;
+
+Example:
+
+
+CREATE OR REPLACE  Procedure  RC_Pro
+IS 
+Type  r_cursor_type   IS  REF  CURSOR;
+E_Cursor  r_cursor_type;
+v_ename  varchar2(20);
+
+Begin
+
+Open  E_Cursor  for  Select  ename  from Employee where salary >  30000;
+
+LOOP  
+Fetch  E_Cursor into  v_ename;
+EXIT When  E_Cursor%NOTFOUND;
+DBMS_OUTPUT.PUT_LINE(v_ename);
+
+END LOOP;
+
+CLOSE E_Cursor;
+
+End;
+
+
+-------------------------------------------------------------------------
+
+Example: Ref Cursor with   Record Type 
+
+
+CREATE OR REPLACE  Procedure  RC_Pro
+IS 
+Type  r_cursor_type   IS  REF  CURSOR;
+E_Cursor  r_cursor_type;
+
+Type  emp_rec_type  IS RECORD(
+
+ename Varchar2(20),
+salary 	 Number(7,2),
+job    Varchar2(20)   
+
+
+);
+
+emp_record   emp_rec_type;
+
+Begin
+
+Open  E_Cursor  for  Select  ename,salary,job  from Employee where salary >  30000;
+
+LOOP  
+Fetch  E_Cursor into  emp_record;
+EXIT When  E_Cursor%NOTFOUND;
+DBMS_OUTPUT.PUT_LINE(emp_record.ename || ' '|| emp_record.salary ||'  '||emp_record.job);
+
+END LOOP;
+
+CLOSE E_Cursor;
+
+End;
+
+===================================================
+
+
+
+
+
+
+
+
+
+User defined type/record in PLSQL:
+----------------------------------
+select  e.ename , e.salary , d.dname , d.location  from employee e , dept d 
+where e.dno =d.dno;
+
+Type   emp_dept_type  IS RECORD(
+
+ ename  varchar2(20),
+ salary  number(7,2),
+ dname   varchar2(20),
+ location varchar2(23)
+
+
+);
+
+ed_rec   emp_dept_type;
+
+
+select  e.ename , e.salary , d.dname , d.location   into ed_rec  from employee e , dept d 
+where e.dno =d.dno;
+
+ed_rec.ename
+ed_rec.dname
+
+
+
